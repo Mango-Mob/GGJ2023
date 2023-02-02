@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 908643715e8fa164c9f48f05b552487a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - loadingBarPrefab: {fileID: 6142764047387251134, guid: 31a2f839fcd2c4449ab2c79e51380588,
+      type: 3}
+  - loadingHintPrefab: {fileID: 8788269708035712207, guid: 02457ca693e39354bad6abbe67ba8a54,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
