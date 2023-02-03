@@ -31,6 +31,11 @@ public class Car : MonoBehaviour
     [SerializeField] private WheelCollider backLeftWheelCollider;
     [SerializeField] private WheelCollider backRightWheelCollider;
 
+    [SerializeField] private Transform frontLeftWheelTransform;
+    [SerializeField] private Transform frontRightWheelTransform;
+    [SerializeField] private Transform backLeftWheelTransform;
+    [SerializeField] private Transform backRightWheelTransform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +51,7 @@ public class Car : MonoBehaviour
         GetInput();
         HandleMotor();
         HandleSteering();
+        UpdateWheels();
 
         // Lock rotation max
         if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 360.0f - xRotLock)
@@ -77,9 +83,15 @@ public class Car : MonoBehaviour
         verticalInput += InputManager.Instance.IsBindPressed("Move_Forward") ? 1.0f : 0.0f;
         verticalInput -= InputManager.Instance.IsBindPressed("Move_Backward") ? 1.0f : 0.0f;
 
-        horizontalInput += InputManager.Instance.IsBindPressed("Move_Right") ? 1.0f : 0.0f;
-        horizontalInput -= InputManager.Instance.IsBindPressed("Move_Left") ? 1.0f : 0.0f;
-
+        if (InputManager.Instance.IsBindPressed("Move_Right") || InputManager.Instance.IsBindPressed("Move_Left"))
+        {
+            horizontalInput += InputManager.Instance.IsBindPressed("Move_Right") ? 1.0f : 0.0f;
+            horizontalInput -= InputManager.Instance.IsBindPressed("Move_Left") ? 1.0f : 0.0f;
+        }
+        else
+        {
+            horizontalInput = InputManager.Instance.GetBindStick("Move").x;
+        }
         isBreaking = InputManager.Instance.IsBindPressed("Roll");
     }
     private void HandleMotor()
@@ -107,5 +119,20 @@ public class Car : MonoBehaviour
         frontRightWheelCollider.brakeTorque = Mathf.Infinity;
         backLeftWheelCollider.brakeTorque = Mathf.Infinity;
         backRightWheelCollider.brakeTorque = Mathf.Infinity;
+    }
+    private void UpdateWheels()
+    {
+        UpdateSingleWheel(frontLeftWheelCollider, frontLeftWheelTransform);
+        UpdateSingleWheel(frontRightWheelCollider, frontRightWheelTransform);
+        UpdateSingleWheel(backLeftWheelCollider, backLeftWheelTransform);
+        UpdateSingleWheel(backRightWheelCollider, backRightWheelTransform);
+    }
+    private void UpdateSingleWheel(WheelCollider _collider, Transform _transform)
+    {
+        Vector3 pos;
+        Quaternion rot;
+        _collider.GetWorldPose(out pos, out rot);
+        _transform.rotation = rot;
+        _transform.position = pos;
     }
 }
