@@ -66,7 +66,9 @@ public class TerrainGenerator : MonoBehaviour
             Vector2Int[] left = { new Vector2Int(0, 0), new Vector2Int(xSize, zSize / 2) };
             Vector2Int[] right = { new Vector2Int(0, zSize / 2), new Vector2Int(xSize, zSize) };
 
-            GameObject.Instantiate(treePrefab, PlaceTree(left, right), Quaternion.identity);
+            Vector3 pos = PlaceTree(left, right);
+            GameObject tree = GameObject.Instantiate(treePrefab, transform);
+            tree.transform.localPosition = pos;
         }
         UpdateMesh();
     }
@@ -149,21 +151,23 @@ public class TerrainGenerator : MonoBehaviour
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
-    public Vector3 PlaceTree(Vector2Int[] left, Vector2Int[] right)
+    public Vector3 PlaceTree(Vector2Int[] left, Vector2Int[] right, bool is_hSplit = true)
     {
-        float left_average = GetAverageHeight(left[0], left[1]);
-        float right_average = GetAverageHeight(right[0], right[1]);
+        float max_left = 0, max_right = 0;
+
+        float left_average = GetAverageHeight(left[0], left[1], ref max_left);
+        float right_average = GetAverageHeight(right[0], right[1], ref max_right);
 
         float min_height = heightCurve[0].value;
         float max_height = heightCurve[heightCurve.length - 1].value;
 
         float total = Mathf.Abs(min_height) + Mathf.Abs(max_height);
 
-        float left_weight = (left_average + Mathf.Abs(min_height)) / total;
-        float right_weight = (right_average + Mathf.Abs(min_height)) / total;
+        float left_weight = (max_left + Mathf.Abs(min_height)) / total;
+        float right_weight = (max_right + Mathf.Abs(min_height)) / total;
 
-
-        if (UnityEngine.Random.Range(0, left_weight + right_weight) <= left_weight)
+        float result = UnityEngine.Random.Range(0, left_weight + right_weight);
+        if ( result <= left_weight)
         {
             float left_size = Vector2Int.Distance(left[0], left[1]);
             if(left_size < 10)
@@ -173,14 +177,14 @@ public class TerrainGenerator : MonoBehaviour
                 return new Vector3(
                     Mathf.Lerp(left_point.x, right_point.x, UnityEngine.Random.Range(0, 1)), 
                     0, 
-                    Mathf.Lerp(left_point.y, right_point.y, UnityEngine.Random.Range(0, 1))
+                    Mathf.Lerp(left_point.z, right_point.z, UnityEngine.Random.Range(0, 1))
                     ); 
             }
             //Select Left
-            Vector2Int mid = (left[1] + left[0]) / 2;
-            Vector2Int[] new_left = { new Vector2Int(left[0].x, left[0].y), new Vector2Int( mid.x, mid.y ) };
-            Vector2Int[] new_right = { new Vector2Int(mid.x, mid.y), new Vector2Int(left[1].x, left[1].y) };
-            return PlaceTree(new_left, new_right);
+            Vector2Int[] split = (is_hSplit) ? hSplit(left) : vSplit(left);
+            Vector2Int[] new_left = { split[0], split[1] };
+            Vector2Int[] new_right = { split[2], split[3] };
+            return PlaceTree(new_left, new_right, !is_hSplit);
         }
         else
         {
@@ -192,15 +196,53 @@ public class TerrainGenerator : MonoBehaviour
                 return new Vector3(
                     Mathf.Lerp(left_point.x, right_point.x, UnityEngine.Random.Range(0, 1)),
                     0,
-                    Mathf.Lerp(left_point.y, right_point.y, UnityEngine.Random.Range(0, 1))
+                    Mathf.Lerp(left_point.z, right_point.z, UnityEngine.Random.Range(0, 1))
                     );
             }
             //Select Right
-            Vector2Int mid = (right[1] + right[0]) / 2;
-            Vector2Int[] new_left = { new Vector2Int(right[0].x, right[0].y), new Vector2Int(mid.x, mid.y) };
-            Vector2Int[] new_right = { new Vector2Int(mid.x, mid.y), new Vector2Int(right[1].x, right[1].y) };
-            return PlaceTree(new_left, new_right);
+            Vector2Int[] split = (is_hSplit) ? hSplit(right) : vSplit(right);
+            Vector2Int[] new_left = { split[0], split[1] };
+            Vector2Int[] new_right = { split[2], split[3] };
+            return PlaceTree(new_left, new_right, !is_hSplit);
         }
+    }
+
+    private Vector2Int[] hSplit(Vector2Int[] side)
+    {
+        Vector2Int mid = (side[1] + side[0]) / 2;
+        int w = side[1].x - side[0].x;
+        int h = side[1].y - side[0].y;
+
+        Vector4[] rect = { 
+            new Vector4(mid.x, mid.y - h/4, w, h/2),
+            new Vector4(mid.x, mid.y + h/4, w, h/2)
+        };
+
+        return new Vector2Int[] {
+            new Vector2Int((int)(rect[0].x - rect[0].z/2), (int)(rect[0].y - rect[0].w/2)),
+            new Vector2Int((int)(rect[0].x + rect[0].z/2), (int)(rect[0].y + rect[0].w/2)),
+            new Vector2Int((int)(rect[1].x - rect[0].z/2), (int)(rect[1].y - rect[1].w/2)),
+            new Vector2Int((int)(rect[1].x + rect[0].z/2), (int)(rect[1].y + rect[1].w/2)),
+        };
+    }
+
+    private Vector2Int[] vSplit(Vector2Int[] side)
+    {
+        Vector2Int mid = (side[1] + side[0]) / 2;
+        int w = side[1].x - side[0].x;
+        int h = side[1].y - side[0].y;
+
+        Vector4[] rect = { //Convert to x, y, w, h
+            new Vector4(mid.x - w/4, mid.y, w/2, h),
+            new Vector4(mid.x + w/4, mid.y, w/2, h)
+        };
+
+        return new Vector2Int[] {
+            new Vector2Int((int)(rect[0].x - rect[0].z/2), (int)(rect[0].y - rect[0].w/2)),
+            new Vector2Int((int)(rect[0].x + rect[0].z/2), (int)(rect[0].y + rect[0].w/2)),
+            new Vector2Int((int)(rect[1].x - rect[0].z/2), (int)(rect[1].y - rect[1].w/2)),
+            new Vector2Int((int)(rect[1].x + rect[0].z/2), (int)(rect[1].y + rect[1].w/2)),
+        };
     }
 
     private Vector3 GetPointAt(int x, int y)
@@ -208,15 +250,23 @@ public class TerrainGenerator : MonoBehaviour
         return vertices[y * zSize + x];
     }
 
-    private float GetAverageHeight(Vector2Int a, Vector2Int b)
+    private float GetAverageHeight(Vector2Int a, Vector2Int b, ref float max_height)
     {
+        max_height = float.MinValue;
+
         float total = 0;
         int count = 0;
         for (int x = a.x; x < b.x; x += (a.x <= b.x ? 1 : -1) )
         {
             for (int y = a.y; y < b.y; y += (a.y <= b.y ? 1 : -1))
             {
-                total += GetPointAt(x, y).y;
+                float curr_height  = GetPointAt(x, y).y;
+
+                if(max_height < curr_height)
+                {
+                    max_height = curr_height;
+                }
+                total += curr_height;
                 count++;
             }
         }
