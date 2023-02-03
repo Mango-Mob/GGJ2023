@@ -721,6 +721,25 @@ public class InputManager : SingletonPersistent<InputManager>
         return !(control.isPressed);
     }
 
+    public float GetRightTrigger(int padID)
+    {
+        ButtonControl control = GetGamepadButton(ButtonType.RT, padID);
+        
+        if (control == null)
+            return 0.0f;
+
+        return control.ReadValue();
+    }
+    public float GetLeftTrigger(int padID)
+    {
+        ButtonControl control = GetGamepadButton(ButtonType.LT, padID);
+
+        if (control == null)
+            return 0.0f;
+
+        return control.ReadValue();
+    }
+
     public Sprite GetGamepadSprite(ButtonType _button)
     {
         switch (_button)
