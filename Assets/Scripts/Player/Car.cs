@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
+    public static void Spawn(Vector3 _position, Quaternion _rotation)
+    {
+        GameObject prefab = Resources.Load<GameObject>("Car");
+        GameObject newCar = Instantiate(prefab, _position, _rotation);
+    }
+
     private Rigidbody rigidbody;
     private float verticalInput = 0.0f;
     private float horizontalInput = 0.0f;
@@ -68,5 +74,12 @@ public class Car : MonoBehaviour
         steeringAngle = maxSteeringAngle * horizontalInput;
         frontLeftWheelCollider.steerAngle = steeringAngle;
         frontRightWheelCollider.steerAngle = steeringAngle;
+    }
+    public void HaltWheels()
+    {
+        frontLeftWheelCollider.motorTorque = 0.0f;
+        frontRightWheelCollider.motorTorque = 0.0f;
+        backLeftWheelCollider.motorTorque = 0.0f;
+        backRightWheelCollider.motorTorque = 0.0f;
     }
 }
