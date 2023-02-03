@@ -23,6 +23,7 @@ public class Car : MonoBehaviour
 
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
+    [SerializeField] private Transform centerOfMass;
 
     [Header("Wheels")]
     [SerializeField] private WheelCollider frontLeftWheelCollider;
@@ -34,6 +35,7 @@ public class Car : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        rigidbody.centerOfMass = centerOfMass.localPosition;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
