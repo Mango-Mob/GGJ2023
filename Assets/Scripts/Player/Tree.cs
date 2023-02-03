@@ -22,13 +22,16 @@ public class Tree : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("PlayerCar") && collision.relativeVelocity.magnitude > breakVelocity)
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
-            Debug.Log(collision.relativeVelocity.magnitude);
-            rigidbody.isKinematic = false;
-            rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
+            if (rigidbody.isKinematic)
+                collision.collider.GetComponentInParent<Car>().HaltWheels();
 
-            collision.collider.GetComponentInParent<Car>().HaltWheels();
+            if (collision.relativeVelocity.magnitude > breakVelocity)
+                Debug.Log(collision.relativeVelocity.magnitude);
+                rigidbody.isKinematic = false;
+                rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
+
         }
     }
 }

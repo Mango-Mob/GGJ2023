@@ -21,6 +21,9 @@ public class Car : MonoBehaviour
     [SerializeField] private float breakForce = 100.0f;
     [SerializeField] private float maxSteeringAngle = 45.0f;
 
+    [SerializeField] private float xRotLock = 30.0f;
+    [SerializeField] private float zRotLock = 30.0f;
+
     [Header("Wheels")]
     [SerializeField] private WheelCollider frontLeftWheelCollider;
     [SerializeField] private WheelCollider frontRightWheelCollider;
@@ -42,6 +45,27 @@ public class Car : MonoBehaviour
         HandleMotor();
         HandleSteering();
 
+        // Lock rotation max
+        if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 360.0f - xRotLock)
+        {
+            Debug.Log($"Locking -X: {transform.rotation.eulerAngles.x}");
+            transform.rotation = Quaternion.Euler(-xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+        }
+        if (transform.rotation.eulerAngles.x < 180.0f && transform.rotation.eulerAngles.x > xRotLock)
+        {
+            Debug.Log($"Locking X: {transform.rotation.eulerAngles.x}");
+            transform.rotation = Quaternion.Euler(xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+        }
+        if (transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z < 360.0f - zRotLock)
+        {
+            Debug.Log($"Locking -Z: {transform.rotation.eulerAngles.z}");
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -zRotLock);
+        }
+        if (transform.rotation.eulerAngles.z < 180.0f && transform.rotation.eulerAngles.z > zRotLock)
+        {
+            Debug.Log($"Locking Z: {transform.rotation.eulerAngles.z}");
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRotLock);
+        }
     }
     private void GetInput()
     {
@@ -77,9 +101,9 @@ public class Car : MonoBehaviour
     }
     public void HaltWheels()
     {
-        frontLeftWheelCollider.motorTorque = 0.0f;
-        frontRightWheelCollider.motorTorque = 0.0f;
-        backLeftWheelCollider.motorTorque = 0.0f;
-        backRightWheelCollider.motorTorque = 0.0f;
+        frontLeftWheelCollider.brakeTorque = Mathf.Infinity;
+        frontRightWheelCollider.brakeTorque = Mathf.Infinity;
+        backLeftWheelCollider.brakeTorque = Mathf.Infinity;
+        backRightWheelCollider.brakeTorque = Mathf.Infinity;
     }
 }
