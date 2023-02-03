@@ -80,9 +80,19 @@ public class Car : MonoBehaviour
         verticalInput = 0.0f;
         horizontalInput = 0.0f;
 
-        verticalInput += InputManager.Instance.IsBindPressed("Move_Forward") ? 1.0f : 0.0f;
-        verticalInput -= InputManager.Instance.IsBindPressed("Move_Backward") ? 1.0f : 0.0f;
+        // Forward movement
+        if (InputManager.Instance.IsBindPressed("Move_Forward") || InputManager.Instance.IsBindPressed("Move_Backward"))
+        {
+            verticalInput += InputManager.Instance.IsBindPressed("Move_Forward") ? 1.0f : 0.0f;
+            verticalInput -= InputManager.Instance.IsBindPressed("Move_Backward") ? 1.0f : 0.0f;
+        }
+        else
+        {
+            verticalInput += InputManager.Instance.GetRightTrigger(0);
+            verticalInput -= InputManager.Instance.GetLeftTrigger(0);
+        }
 
+        // Side movement
         if (InputManager.Instance.IsBindPressed("Move_Right") || InputManager.Instance.IsBindPressed("Move_Left"))
         {
             horizontalInput += InputManager.Instance.IsBindPressed("Move_Right") ? 1.0f : 0.0f;
