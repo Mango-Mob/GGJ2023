@@ -3247,21 +3247,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
-    - target: {fileID: 2750438180545189329, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750438180622035635, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750438180623457048, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750438180655874724, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
