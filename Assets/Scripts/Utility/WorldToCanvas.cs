@@ -23,7 +23,6 @@ public class WorldToCanvas : MonoBehaviour
     {
         ForceUpdate();
     }
-
     public void ForceUpdate()
     {
         if (m_anchorTransform != null && GameManager.Instance != null && GameManager.Instance.m_activeCamera != null)
