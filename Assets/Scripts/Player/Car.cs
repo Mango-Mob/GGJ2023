@@ -29,7 +29,6 @@ public class Car : MonoBehaviour
     [SerializeField] private float motorForce = 100.0f;
     [SerializeField] private float brakeForce = 100.0f;
     [SerializeField] private float maxSteeringAngle = 45.0f;
-    [SerializeField] private float nosMult = 100.0f;
     [SerializeField] private float jumpVelocity = 5.0f;
     [SerializeField] private float waterJumpMult = 2.0f;
     [SerializeField] private float airTiltForce = 5.0f;
@@ -37,6 +36,12 @@ public class Car : MonoBehaviour
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
     [SerializeField] private Transform centerOfMass;
+
+    [Header("Boost")]
+    [SerializeField] private float nosMult = 100.0f;
+    [SerializeField] private float nosRechargeRate = 0.3f;
+    private float nosCharge = 3.0f;
+    private float maxNosCharge = 3.0f;
 
     [Header("Swimming")]
     [SerializeField] private float waterFloatVelocity = 2.5f;
@@ -111,6 +116,8 @@ public class Car : MonoBehaviour
         GameManager.Instance.m_player = gameObject;
         GameManager.Instance.m_activeCamera = playerCamera;
 
+        nosCharge = maxNosCharge;
+
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
     public void NotifyDestroyed(Tree _tree)
@@ -133,6 +140,15 @@ public class Car : MonoBehaviour
             //We are paused!
             return;
         }
+
+        nosCharge += Time.deltaTime * nosRechargeRate;
+        nosCharge = Mathf.Clamp(nosCharge, 0.0f, maxNosCharge);
+        if (nosCharge >= 1.0f && InputManager.Instance.IsBindDown("Boost"))
+        {
+            rigidbody.AddForce(transform.forward * nosMult, ForceMode.Impulse);
+            nosCharge -= 1.0f;
+        }
+
 
         ropeRenderer.enabled = hooked;
         if (!hooked)
@@ -301,7 +317,7 @@ public class Car : MonoBehaviour
         bool forceBrake = verticalInput != 0.0f && (angle > 90.0f && Mathf.Sign(verticalInput) == 1.0f || angle < 90.0f && Mathf.Sign(verticalInput) == -1.0f);
         
         isBraking = InputManager.Instance.IsBindPressed("Roll") || forceBrake;
-        isNOS = InputManager.Instance.IsBindPressed("Boost");
+        //isNOS = InputManager.Instance.IsBindPressed("Boost");
         isJumping = InputManager.Instance.IsBindPressed("Jump");
     }
     private void HandleMotor()
