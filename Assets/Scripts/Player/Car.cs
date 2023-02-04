@@ -117,6 +117,14 @@ public class Car : MonoBehaviour
         if (currentTarget == _tree)
             StopHarpoon();
     }
+    public Tree GetHookedTree()
+    {
+        if (hooked && currentTarget != null)
+            return currentTarget;
+        else
+            return null;
+    }
+
     private void Update()
     {
         if(GameManager.Instance.time_scale == 0)
