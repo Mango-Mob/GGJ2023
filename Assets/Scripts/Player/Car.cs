@@ -29,6 +29,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float maxSteeringAngle = 45.0f;
     [SerializeField] private float nosMult = 100.0f;
     [SerializeField] private float jumpVelocity = 5.0f;
+    [SerializeField] private float waterJumpMult = 2.0f;
     [SerializeField] private float airTiltForce = 5.0f;
 
     [SerializeField] private float xRotLock = 30.0f;
@@ -56,10 +57,21 @@ public class Car : MonoBehaviour
     [Header("Harpoon")]
     [SerializeField] private GameObject harpoonLauncher;
     [SerializeField] private GameObject harpoon;
+    [SerializeField] private float harpoonRange = 30.0f;
+    [SerializeField] private float harpoonLockonRange = 5.0f;
+    [SerializeField] private float harpoonSpeed = 10.0f;
+    [SerializeField] private float harpoonSpring = 10.0f;
+    [SerializeField] private LayerMask harpoonTargetMask;
+    [SerializeField] private LineRenderer ropeRenderer;
 
     private Tree currentTarget;
     private GameObject harpoonProjectile;
+    private Vector3 harpoonOrigin = Vector3.zero;
+
+    private Vector3 harpoonStartPos = Vector3.zero;
+    private Vector3 harpoonStartRot = Vector3.zero;
     private bool hooked = false;
+    private bool isHarpoonTravelling = false;
 
     // Start is called before the first frame update
     void Start()
@@ -68,20 +80,105 @@ public class Car : MonoBehaviour
         mainCollider = GetComponent<BoxCollider>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
+        harpoonOrigin = harpoon.transform.localPosition;
+
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
 
     private void Update()
     {
-        float harpoonRotation = playerCamera.transform.eulerAngles.y;
-        harpoonLauncher.transform.eulerAngles = new Vector3(0.0f, harpoonRotation, 0.0f);
+        ropeRenderer.enabled = hooked;
+        if (!hooked)
+        {
+            //harpoonJoint.connectedAnchor = transform.position;
+
+            // Aim
+            float harpoonRotation = playerCamera.transform.eulerAngles.y;
+            harpoonLauncher.transform.eulerAngles = new Vector3(0.0f, harpoonRotation, 0.0f);
+
+            var hits = Physics.SphereCastAll(harpoonLauncher.transform.position, harpoonLockonRange, harpoonLauncher.transform.forward, harpoonRange, harpoonTargetMask);
+            Debug.Log(hits.Length);
+
+
+            float closestDistance = Mathf.Infinity;
+            Tree closestTarget = null;
+            foreach (var hit in hits)
+            {
+                Tree tree = hit.collider.GetComponent<Tree>();
+                if (tree == null)
+                    continue;
+
+                float distance = Vector3.Distance(harpoonLauncher.transform.position, tree.transform.position);
+                if (closestTarget == null || distance < closestDistance)
+                {
+                    closestTarget = tree;
+                    closestDistance = distance;
+                }
+            }
+
+            currentTarget = closestTarget;
+
+        }
+        else
+        {
+            Vector3 harpoonOffset = harpoon.transform.position - harpoonLauncher.transform.position;
+            harpoonOffset.y = 0.0f;
+
+            harpoonLauncher.transform.forward = harpoonOffset;
+
+            if (isHarpoonTravelling)
+                harpoon.transform.eulerAngles = harpoonStartRot;
+            else
+                harpoon.transform.eulerAngles = currentTarget.transform.rotation * harpoonStartRot;
+
+            if (!isHarpoonTravelling)
+                harpoon.transform.position = currentTarget.centreOfMass.position;
+        }
 
         if (InputManager.Instance.IsBindDown("Fire"))
         {
-            hooked = !hooked;
+            if (!hooked && currentTarget)
+            {
+                hooked = true;
+                harpoonStartPos = harpoon.transform.position;
+                harpoonStartRot = harpoon.transform.eulerAngles;
 
-            
-            harpoon.SetActive(!harpoon.activeSelf);
+                StartCoroutine(FireHarpoon());
+            }
+            else
+            {
+                harpoon.transform.localPosition = harpoonOrigin;
+                harpoon.transform.localRotation = Quaternion.identity;
+                hooked = false;
+            }
+        }
+    }
+
+    IEnumerator FireHarpoon()
+    {
+        if (currentTarget != null)
+        {
+            isHarpoonTravelling = true;
+            float travelLerp = 0.0f;
+            float distance = Vector3.Distance(harpoonStartPos, currentTarget.centreOfMass.position);
+
+            while (travelLerp < 1.0f)
+            {
+                travelLerp += Time.deltaTime * harpoonSpeed / distance;
+                harpoon.transform.position = Vector3.Lerp(harpoonStartPos, currentTarget.centreOfMass.position, travelLerp);
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        isHarpoonTravelling = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (currentTarget)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(currentTarget.centreOfMass.position, 0.5f);
         }
     }
 
@@ -93,9 +190,20 @@ public class Car : MonoBehaviour
         HandleSteering();
         HandleJumping();
         HandleSwimming();
+        HandleHarpoon();
         UpdateWheels();
-
-
+    }
+    private void HandleHarpoon()
+    {
+        if (hooked && !isHarpoonTravelling)
+        {
+            Vector3 hookDifference = rigidbody.worldCenterOfMass - currentTarget.transform.position;
+            if (hookDifference.magnitude > harpoonRange)
+            {
+                currentTarget.GetComponent<Rigidbody>().AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * hookDifference.normalized);
+                rigidbody.AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * -hookDifference.normalized);
+            }
+        }
     }
     private void GetInput()
     {
@@ -154,7 +262,7 @@ public class Car : MonoBehaviour
         if (isJumping && (isGrounded || isSwimming))
         {
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
-            rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity;
+            rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity * (isSwimming ? waterJumpMult : 1.0f);
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);
         }
         tiltInput = Vector2.zero;
