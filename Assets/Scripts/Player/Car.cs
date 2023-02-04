@@ -14,14 +14,14 @@ public class Car : MonoBehaviour
     private Collider mainCollider;
     private float verticalInput = 0.0f;
     private float horizontalInput = 0.0f;
-    private bool isBreaking = false;
+    private bool isBraking = false;
     private bool isNOS = false;
     private bool isJumping = false;
     private float steeringAngle = 0.0f;
 
     [Header("Settings")]
     [SerializeField] private float motorForce = 100.0f;
-    [SerializeField] private float breakForce = 100.0f;
+    [SerializeField] private float brakeForce = 100.0f;
     [SerializeField] private float maxSteeringAngle = 45.0f;
     [SerializeField] private float nosMult = 100.0f;
     [SerializeField] private float jumpVelocity = 5.0f;
@@ -61,7 +61,7 @@ public class Car : MonoBehaviour
         HandleJumping();
         UpdateWheels();
 
-        
+
     }
     private void GetInput()
     {
@@ -91,7 +91,11 @@ public class Car : MonoBehaviour
             horizontalInput = InputManager.Instance.GetBindStick("Move").x;
         }
 
-        isBreaking = InputManager.Instance.IsBindPressed("Roll");
+        Debug.Log($"RPM: {frontLeftWheelCollider.rpm}, Input: {verticalInput}, {Mathf.Sign(verticalInput) != Mathf.Sign(frontLeftWheelCollider.rpm)}");
+        float angle = Vector3.Angle(transform.forward, rigidbody.velocity);
+        bool forceBrake = verticalInput != 0.0f && (angle > 90.0f && Mathf.Sign(verticalInput) == 1.0f || angle < 90.0f && Mathf.Sign(verticalInput) == -1.0f);
+        
+        isBraking = InputManager.Instance.IsBindPressed("Roll") || forceBrake;
         isNOS = InputManager.Instance.IsBindPressed("Boost");
         isJumping = InputManager.Instance.IsBindPressed("Jump");
     }
@@ -102,7 +106,7 @@ public class Car : MonoBehaviour
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
 
-        float currentBreakForce = isBreaking ? breakForce : 0.0f;
+        float currentBreakForce = isBraking ? brakeForce : 0.0f;
 
         frontLeftWheelCollider.brakeTorque = currentBreakForce;
         frontRightWheelCollider.brakeTorque = currentBreakForce;
@@ -115,11 +119,22 @@ public class Car : MonoBehaviour
         bool isGrounded = frontLeftWheelCollider.isGrounded || frontRightWheelCollider.isGrounded || backLeftWheelCollider.isGrounded || backRightWheelCollider.isGrounded;
 
         if (isJumping && isGrounded)
+        {
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpVelocity, rigidbody.velocity.z);
+            rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);
+        }
+        Vector2 tiltInput = Vector2.zero;
+        tiltInput.x += InputManager.Instance.IsBindPressed("Move_Right") ? 1.0f : 0.0f;
+        tiltInput.x -= InputManager.Instance.IsBindPressed("Move_Left") ? 1.0f : 0.0f;
+        tiltInput.y += InputManager.Instance.IsBindPressed("Move_Forward") ? 1.0f : 0.0f;
+        tiltInput.y -= InputManager.Instance.IsBindPressed("Move_Backward") ? 1.0f : 0.0f;
+
+        if (tiltInput.magnitude == 0.0f)
+            tiltInput = InputManager.Instance.GetBindStick("Move");
 
         if (!isGrounded)
         {
-            rigidbody.AddTorque(new Vector3(verticalInput * airTiltForce * Time.fixedDeltaTime, 0.0f, horizontalInput * airTiltForce * Time.fixedDeltaTime), ForceMode.Acceleration);
+            rigidbody.AddRelativeTorque(new Vector3(tiltInput.y * airTiltForce * Time.fixedDeltaTime, 0.0f, -tiltInput.x * airTiltForce * Time.fixedDeltaTime), ForceMode.Acceleration);
         }
 
 
