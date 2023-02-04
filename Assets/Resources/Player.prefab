@@ -1125,8 +1125,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2750438179710187833, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: brakeForce
-      value: 1200
+      propertyPath: airTiltForce
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2750438179710187835, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_Name

@@ -61,7 +61,7 @@ public class Car : MonoBehaviour
         HandleJumping();
         UpdateWheels();
 
-        
+
     }
     private void GetInput()
     {
@@ -91,8 +91,10 @@ public class Car : MonoBehaviour
             horizontalInput = InputManager.Instance.GetBindStick("Move").x;
         }
 
-        bool forceBrake = Mathf.Abs(frontLeftWheelCollider.rpm) < 10.0f && Mathf.Sign(verticalInput) != Mathf.Sign(frontLeftWheelCollider.rpm);
-
+        Debug.Log($"RPM: {frontLeftWheelCollider.rpm}, Input: {verticalInput}, {Mathf.Sign(verticalInput) != Mathf.Sign(frontLeftWheelCollider.rpm)}");
+        float angle = Vector3.Angle(transform.forward, rigidbody.velocity);
+        bool forceBrake = verticalInput != 0.0f && (angle > 90.0f && Mathf.Sign(verticalInput) == 1.0f || angle < 90.0f && Mathf.Sign(verticalInput) == -1.0f);
+        
         isBraking = InputManager.Instance.IsBindPressed("Roll") || forceBrake;
         isNOS = InputManager.Instance.IsBindPressed("Boost");
         isJumping = InputManager.Instance.IsBindPressed("Jump");

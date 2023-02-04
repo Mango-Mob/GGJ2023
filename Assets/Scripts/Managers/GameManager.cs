@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -24,5 +25,12 @@ public class GameManager : Singleton<GameManager>
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_activeCamera = Camera.main;
+    }
+    public void Update()
+    {
+        if(InputManager.Instance.IsKeyPressed(KeyType.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
