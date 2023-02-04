@@ -54,6 +54,22 @@ public class MultiAudioAgent : AudioAgent
         }
     }
 
+    public bool PlayRandom(bool isLooping = true, float pitch = 1.0f)
+    {
+        int select = UnityEngine.Random.Range(0, audioLibrary.Count);
+        AudioPlayer player = GetAvailablePlayer();
+        if (player != null)
+        {
+            player.SetClip(audioLibrary.Values.ElementAt(select));
+            player.SetLooping(isLooping);
+            player.SetPitch(pitch);
+            player.Play();
+            return true;
+        }
+        Debug.LogWarning($"MultiAudioAgent on gameObject: \"{gameObject.name}\" doesn't have enough players to play: \"{audioLibrary.Keys.ElementAt(select)}\".");
+        return false;
+    }
+
     public void UpdateList()
     {
         if(audioLibrary == null)

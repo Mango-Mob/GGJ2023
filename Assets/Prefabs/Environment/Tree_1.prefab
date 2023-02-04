@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4563084327486620087}
   - component: {fileID: 1396208525748289924}
   - component: {fileID: 4329205399143133641}
+  - component: {fileID: 7027740764736558019}
   m_Layer: 0
   m_Name: Tree_1
   m_TagString: Wood
@@ -47,9 +48,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.8
-  m_Height: 12
+  m_Height: 8
   m_Direction: 1
-  m_Center: {x: 0.12, y: 6, z: 0.2}
+  m_Center: {x: 0.12, y: 4, z: 0.2}
 --- !u!54 &4563084327486620087
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -102,6 +103,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7027740764736558019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015509493878918148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013d2f1b59b0f71408bb9ba816659dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localVolume: 0.8
+  isMuted: 0
+  is3D: 0
+  min3D_Dist: 1
+  max3D_Dist: 500
+  audioClips:
+  - {fileID: 8300000, guid: 8c0091382ee10034bae309b05663b402, type: 3}
+  - {fileID: 8300000, guid: 33114f1fcad9f214caf2714bf3e29efc, type: 3}
+  - {fileID: 8300000, guid: b255f36987c5ba84ebba9712198240d2, type: 3}
+  audioPlayersCount: 5
+  channel: 1
 --- !u!1 &2374218021454730524
 GameObject:
   m_ObjectHideFlags: 0

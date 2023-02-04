@@ -8,11 +8,14 @@ public class LumberCollection : MonoBehaviour
     {
         if(other.tag == "Wood")
         {
-            Prop prop = other.GetComponent<Prop>();
-            prop?.owner.Collect(prop);
+            if(!other.attachedRigidbody.isKinematic)
+            {
+                Prop prop = other.GetComponent<Prop>();
+                prop?.owner.Collect(prop);
 
-            if(!prop)
-                Destroy(other.gameObject);
+                if (!prop)
+                    Destroy(other.gameObject);
+            }
         }
     }
 }
