@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class ScoreDisplay : MonoBehaviour
 {
     private TMP_Text render;
-
+    public bool is_Time = false;
+    public bool is_cash = false;
     [Range(0f, 9999f)]
     public float value;
     // Start is called before the first frame update
@@ -21,6 +22,26 @@ public class ScoreDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        render.SetText(((int)value).ToString());
+        if (!is_Time && !is_cash)
+            render.SetText(((int)value).ToString());
+        else if(is_cash)
+            render.SetText($"${value}");
+        else
+            render.SetText(ToTimeString(value));
+    }
+
+    string ToTimeString(float value)
+    {
+        if (value <= 0)
+            return $"00:00";
+
+        int mins = 0;
+        if(value > 60)
+        {
+            mins = (int)value / 60; //61
+            value = value % 60;
+        }
+
+        return $"{mins.ToString("D2")}:{((int)value).ToString("D2")}";
     }
 }
