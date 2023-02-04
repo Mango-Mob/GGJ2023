@@ -80,7 +80,8 @@ public class Car : MonoBehaviour
         {
             case Modifier.Stat.Modifies.Accel:
                 break;
-            case Modifier.Stat.Modifies.Top_Speed:
+            case Modifier.Stat.Modifies.CoolDown:
+                value *= -1; //invert Positive should decrease
                 break;
             case Modifier.Stat.Modifies.Impact:
                 break;
