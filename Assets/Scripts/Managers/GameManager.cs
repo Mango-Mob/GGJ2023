@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public bool IsInCombat = false;
 
     public float cash;
+    public float score;
     protected override void Awake()
     {
         base.Awake();
@@ -38,5 +39,6 @@ public class GameManager : Singleton<GameManager>
     internal void AddCash(int _cash)
     {
         cash += _cash;
+        score += _cash;
     }
 }

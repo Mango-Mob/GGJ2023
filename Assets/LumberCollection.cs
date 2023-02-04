@@ -10,7 +10,9 @@ public class LumberCollection : MonoBehaviour
         {
             Prop prop = other.GetComponent<Prop>();
             prop?.owner.Collect(prop);
-            Destroy(other.gameObject);
+
+            if(!prop)
+                Destroy(other.gameObject);
         }
     }
 }
