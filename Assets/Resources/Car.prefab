@@ -645,7 +645,7 @@ MonoBehaviour:
   motorForce: 1200
   brakeForce: 800
   maxSteeringAngle: 45
-  nosMult: 5
+  nosMult: 25000
   jumpVelocity: 5
   waterJumpMult: 2
   airTiltForce: 100
@@ -3634,11 +3634,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9178281269976824542, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
   m_PrefabInstance: {fileID: 7061912280679309859}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &7936481626982399863 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 875097113504570708, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
-  m_PrefabInstance: {fileID: 7061912280679309859}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8931551606371503405 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1870063742818725646, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
@@ -3647,6 +3642,11 @@ GameObject:
 --- !u!4 &4391163169001657119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6841100250967748924, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
+  m_PrefabInstance: {fileID: 7061912280679309859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &7936481626982399863 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 875097113504570708, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
   m_PrefabInstance: {fileID: 7061912280679309859}
   m_PrefabAsset: {fileID: 0}
 --- !u!54 &431659477327059776 stripped
