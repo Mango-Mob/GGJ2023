@@ -33,11 +33,6 @@ public class GameManager : Singleton<GameManager>
     }
     public void Update()
     {
-        if(InputManager.Instance.IsKeyPressed(KeyType.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
         timer -= Time.deltaTime * time_scale;
 
         if(timer <= 0)
