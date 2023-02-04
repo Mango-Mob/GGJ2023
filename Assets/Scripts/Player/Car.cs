@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +64,27 @@ public class Car : MonoBehaviour
     [SerializeField] private float harpoonSpring = 10.0f;
     [SerializeField] private LayerMask harpoonTargetMask;
     [SerializeField] private LineRenderer ropeRenderer;
+
+    public void ApplyStat(Modifier.Stat.Modifies to, float value)
+    {
+        switch (to)
+        {
+            case Modifier.Stat.Modifies.Accel:
+                break;
+            case Modifier.Stat.Modifies.Top_Speed:
+                break;
+            case Modifier.Stat.Modifies.Impact:
+                break;
+            case Modifier.Stat.Modifies.Steering:
+                break;
+            case Modifier.Stat.Modifies.Jump:
+                break;
+            case Modifier.Stat.Modifies.Swim_Speed:
+                break;
+            default:
+                break;
+        }
+    }
 
     private Tree currentTarget;
     private GameObject harpoonProjectile;
