@@ -35,7 +35,7 @@ public class PropFactory : MonoBehaviour
     {
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
         propObj.transform.position = position;
-        propObj.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360.0f), 0);
+        propObj.transform.localRotation = Quaternion.Euler(0, Random.Range(0, 360.0f), 0);
 
         Prop prop = propObj.AddComponent<Prop>();
         prop.owner = this;
@@ -45,6 +45,12 @@ public class PropFactory : MonoBehaviour
     {
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
         propObj.transform.localPosition = localPosition;
+
+        //RaycastHit result;
+        //if (Physics.Raycast(propObj.transform.position + new Vector3(0, 1, 0), Vector3.down, out result))
+        //{
+        //    propObj.transform.position = result.point;
+        //}
 
         PlayerSpawnLocation spawn = propObj.GetComponentInChildren<PlayerSpawnLocation>();
         Car.Spawn(spawn.transform.position, spawn.transform.rotation);
