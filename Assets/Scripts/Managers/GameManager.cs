@@ -12,6 +12,9 @@ public class GameManager : Singleton<GameManager>
 
     public float cash;
     public float score;
+    public float timer = 3 * 60f;
+
+    public float time_scale = 1.0f;
     protected override void Awake()
     {
         base.Awake();
@@ -34,11 +37,19 @@ public class GameManager : Singleton<GameManager>
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        timer -= Time.deltaTime * time_scale;
+
+        if(timer <= 0)
+        {
+            //game Over
+        }
     }
 
     internal void AddCash(int _cash)
     {
         cash += _cash;
+        timer += (_cash / 100) * 15f;
         score += _cash;
     }
 }
