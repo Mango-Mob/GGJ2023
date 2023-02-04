@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LumberCollection : MonoBehaviour
 {
+    public Animator animator;
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Wood")
@@ -16,6 +18,8 @@ public class LumberCollection : MonoBehaviour
                 if (!prop)
                     Destroy(other.gameObject);
             }
+            animator.SetTrigger("Cut");
+            GetComponent<SoloAudioAgent>().Play();
         }
         else if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
@@ -25,6 +29,8 @@ public class LumberCollection : MonoBehaviour
                 Prop prop = tree.GetComponent<Prop>();
                 prop?.owner.Collect(prop);
             }
+            animator.SetTrigger("Cut");
+            GetComponent<SoloAudioAgent>().Play();
         }
     }
 }
