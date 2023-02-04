@@ -11,15 +11,20 @@ public class Car : MonoBehaviour
     }
 
     private Rigidbody rigidbody;
+    private Collider mainCollider;
     private float verticalInput = 0.0f;
     private float horizontalInput = 0.0f;
     private bool isBreaking = false;
+    private bool isNOS = false;
+    private bool isJumping = false;
     private float steeringAngle = 0.0f;
 
     [Header("Settings")]
     [SerializeField] private float motorForce = 100.0f;
     [SerializeField] private float breakForce = 100.0f;
     [SerializeField] private float maxSteeringAngle = 45.0f;
+    [SerializeField] private float nosMult = 100.0f;
+    [SerializeField] private float jumpVelocity = 5.0f;
 
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
@@ -40,6 +45,7 @@ public class Car : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        mainCollider = GetComponent<BoxCollider>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
@@ -51,27 +57,32 @@ public class Car : MonoBehaviour
         GetInput();
         HandleMotor();
         HandleSteering();
+        HandleJumping();
         UpdateWheels();
 
         // Lock rotation max
         if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 360.0f - xRotLock)
         {
             Debug.Log($"Locking -X: {transform.rotation.eulerAngles.x}");
+            rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, rigidbody.angularVelocity.z);
             transform.rotation = Quaternion.Euler(-xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
         if (transform.rotation.eulerAngles.x < 180.0f && transform.rotation.eulerAngles.x > xRotLock)
         {
             Debug.Log($"Locking X: {transform.rotation.eulerAngles.x}");
+            rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, rigidbody.angularVelocity.z);
             transform.rotation = Quaternion.Euler(xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
         if (transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z < 360.0f - zRotLock)
         {
             Debug.Log($"Locking -Z: {transform.rotation.eulerAngles.z}");
+            rigidbody.angularVelocity = new Vector3(rigidbody.angularVelocity.x, rigidbody.angularVelocity.y, 0.0f);
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -zRotLock);
         }
         if (transform.rotation.eulerAngles.z < 180.0f && transform.rotation.eulerAngles.z > zRotLock)
         {
             Debug.Log($"Locking Z: {transform.rotation.eulerAngles.z}");
+            rigidbody.angularVelocity = new Vector3(rigidbody.angularVelocity.x, rigidbody.angularVelocity.y, 0.0f);
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRotLock);
         }
     }
@@ -102,12 +113,17 @@ public class Car : MonoBehaviour
         {
             horizontalInput = InputManager.Instance.GetBindStick("Move").x;
         }
+
         isBreaking = InputManager.Instance.IsBindPressed("Roll");
+        isNOS = InputManager.Instance.IsBindPressed("Boost");
+        isJumping = InputManager.Instance.IsBindPressed("Jump");
     }
     private void HandleMotor()
     {
-        frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
-        frontRightWheelCollider.motorTorque = verticalInput * motorForce;
+        float currentNosForce = isNOS ? nosMult : 1.0f;
+
+        frontLeftWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
+        frontRightWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
 
         float currentBreakForce = isBreaking ? breakForce : 0.0f;
 
@@ -116,6 +132,11 @@ public class Car : MonoBehaviour
         backLeftWheelCollider.brakeTorque = currentBreakForce;
         backRightWheelCollider.brakeTorque = currentBreakForce;
         
+    }
+    private void HandleJumping()
+    {
+        if (isJumping && (frontLeftWheelCollider.isGrounded || frontRightWheelCollider.isGrounded || backLeftWheelCollider.isGrounded || backRightWheelCollider.isGrounded))
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpVelocity, rigidbody.velocity.z);
     }
     private void HandleSteering()
     {
