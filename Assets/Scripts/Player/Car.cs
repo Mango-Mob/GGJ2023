@@ -133,6 +133,11 @@ public class Car : MonoBehaviour
             return;
         }
 
+        if (InputManager.Instance.IsBindDown("Boost"))
+        {
+            rigidbody.AddForce(transform.forward * nosMult, ForceMode.Impulse);
+        }
+
         ropeRenderer.enabled = hooked;
         if (!hooked)
         {
@@ -300,7 +305,7 @@ public class Car : MonoBehaviour
         bool forceBrake = verticalInput != 0.0f && (angle > 90.0f && Mathf.Sign(verticalInput) == 1.0f || angle < 90.0f && Mathf.Sign(verticalInput) == -1.0f);
         
         isBraking = InputManager.Instance.IsBindPressed("Roll") || forceBrake;
-        isNOS = InputManager.Instance.IsBindPressed("Boost");
+        //isNOS = InputManager.Instance.IsBindPressed("Boost");
         isJumping = InputManager.Instance.IsBindPressed("Jump");
     }
     private void HandleMotor()
