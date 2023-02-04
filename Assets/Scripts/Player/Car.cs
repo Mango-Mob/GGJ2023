@@ -89,7 +89,7 @@ public class Car : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         mainCollider = GetComponent<BoxCollider>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
-
+        GameManager.Instance.m_player = gameObject;
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
 
