@@ -39,6 +39,7 @@ public class Tree : MonoBehaviour
                 branches.SetActive(false);
                 rigidbody.isKinematic = false;
                 rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
+                GetComponent<MultiAudioAgent>().PlayRandom();
             }
         }
     }
