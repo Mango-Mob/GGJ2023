@@ -240,7 +240,9 @@ public class InputManager : SingletonPersistent<InputManager>
         m_binds.Add("Move_Backward", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.S) });
         m_binds.Add("Move_Left", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.A) }); ;
         m_binds.Add("Move_Right", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.D) });
-        m_binds.Add("Roll", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.SPACE), new Bind(typeof(ButtonType), (int)ButtonType.EAST) });
+        m_binds.Add("Roll", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.L_CTRL), new Bind(typeof(ButtonType), (int)ButtonType.EAST) });
+        m_binds.Add("Boost", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.L_SHIFT), new Bind(typeof(ButtonType), (int)ButtonType.NORTH) });
+        m_binds.Add("Jump", new Bind[] { new Bind(typeof(KeyType), (int)KeyType.SPACE), new Bind(typeof(ButtonType), (int)ButtonType.SOUTH) });
 
         //Attack
         m_binds.Add("Aim", new Bind[] { new Bind(typeof(StickType), (int)StickType.RIGHT) });
