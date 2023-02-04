@@ -649,7 +649,7 @@ MonoBehaviour:
   xRotLock: 30
   zRotLock: 30
   centerOfMass: {fileID: 817793569}
-  waterFloatVelocity: 2.5
+  waterFloatVelocity: 1100
   waterFloatDepth: 0
   waterDamping: 2
   swimAcceleration: 20

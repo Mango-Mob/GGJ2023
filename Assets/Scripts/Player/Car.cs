@@ -129,10 +129,10 @@ public class Car : MonoBehaviour
     {
         bool isGrounded = frontLeftWheelCollider.isGrounded || frontRightWheelCollider.isGrounded || backLeftWheelCollider.isGrounded || backRightWheelCollider.isGrounded;
 
-        if (isJumping && isGrounded)
+        if (isJumping && (isGrounded || isSwimming))
         {
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
-            rigidbody.velocity += transform.up * jumpVelocity;
+            rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity;
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);
         }
         tiltInput = Vector2.zero;
@@ -185,7 +185,7 @@ public class Car : MonoBehaviour
 
         if (isSwimming)
         {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, waterFloatVelocity * Mathf.Abs(transform.position.y - waterFloatDepth), rigidbody.velocity.z);
+            rigidbody.AddForce(Vector3.up * waterFloatVelocity * Mathf.Abs(transform.position.y - waterFloatDepth) * Time.fixedDeltaTime, ForceMode.Acceleration);
 
             Vector3 cameraForward = playerCamera.transform.forward;
             cameraForward.y = 0.0f;
@@ -197,29 +197,29 @@ public class Car : MonoBehaviour
 
             rigidbody.AddForce(swimAcceleration * swimDirection, ForceMode.Acceleration);
 
-                float xDifference = 0.0f;
-                if (transform.rotation.eulerAngles.x > 180.0f)
-                {
-                    xDifference = transform.rotation.eulerAngles.x - 360.0f;
-                }
-                else if (transform.rotation.eulerAngles.x <= 180.0f)
-                {
-                    xDifference = transform.rotation.eulerAngles.x;
-                }
+            float xDifference = 0.0f;
+            if (transform.rotation.eulerAngles.x > 180.0f)
+            {
+                xDifference -= transform.rotation.eulerAngles.x - 360.0f;
+            }
+            else if (transform.rotation.eulerAngles.x <= 180.0f)
+            {
+                xDifference = transform.rotation.eulerAngles.x;
+            }
 
-                float zDifference = 0.0f;
-                if (transform.rotation.eulerAngles.z > 180.0f)
-                {
-                    zDifference = transform.rotation.eulerAngles.z - 360.0f;
-                }
-                else if (transform.rotation.eulerAngles.z <= 180.0f)
-                {
-                    zDifference = transform.rotation.eulerAngles.z;
-                }
+            float zDifference = 0.0f;
+            if (transform.rotation.eulerAngles.z > 180.0f)
+            {
+                zDifference -= transform.rotation.eulerAngles.z - 360.0f;
+            }
+            else if (transform.rotation.eulerAngles.z <= 180.0f)
+            {
+                zDifference = transform.rotation.eulerAngles.z;
+            }
 
-                Debug.Log($"{xDifference}, {zDifference}");
-                Vector3 swimTorque = new Vector3(-xDifference, 0.0f, zDifference);
-            rigidbody.AddTorque(swimTorque * swimTorqueMult * Time.fixedDeltaTime, ForceMode.Acceleration);
+            Debug.Log($"{xDifference}, {zDifference}");
+            Vector3 swimTorque = new Vector3(-xDifference, 0.0f, zDifference);
+            rigidbody.AddRelativeTorque(swimTorque * swimTorqueMult * Time.fixedDeltaTime, ForceMode.Acceleration);
 
             if (swimDirection.magnitude > 0.0f)
             {
