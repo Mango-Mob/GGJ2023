@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     public Camera m_activeCamera;
     public bool IsInCombat = false;
 
+    public float cash;
     protected override void Awake()
     {
         base.Awake();
@@ -32,5 +33,10 @@ public class GameManager : Singleton<GameManager>
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+
+    internal void AddCash(int _cash)
+    {
+        cash += _cash;
     }
 }

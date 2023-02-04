@@ -21,6 +21,14 @@ public class PropFactory : MonoBehaviour
         prop.owner = this;
         propList.Add(prop);
     }
+
+    public void Collect(Prop prop)
+    {
+        Remove(prop);
+        GameManager.Instance.AddCash(200);
+        SpawnTree(GetComponent<TerrainGenerator>().treePrefab, GetComponent<TerrainGenerator>().PlaceTree());
+    }
+
     public void SpawnGrass(GameObject prefab, Vector3 position)
     {
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
