@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.VFX;
 public class Car : MonoBehaviour
 {
     public static void Spawn(Vector3 _position, Quaternion _rotation)
@@ -65,6 +65,8 @@ public class Car : MonoBehaviour
     [SerializeField] private LayerMask harpoonTargetMask;
     [SerializeField] private LineRenderer ropeRenderer;
 
+    [Header("VFX")]
+    [SerializeField] private VisualEffect tailSmoke;
     public void ApplyStat(Modifier.Stat.Modifies to, float value)
     {
         switch (to)
@@ -103,10 +105,15 @@ public class Car : MonoBehaviour
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
         harpoonOrigin = harpoon.transform.localPosition;
+        GameManager.Instance.m_player = gameObject;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
-
+    public void NotifyDestroyed(Tree _tree)
+    {
+        if (currentTarget == _tree)
+            StopHarpoon();
+    }
     private void Update()
     {
         ropeRenderer.enabled = hooked;
@@ -169,13 +176,17 @@ public class Car : MonoBehaviour
             }
             else
             {
-                harpoon.transform.localPosition = harpoonOrigin;
-                harpoon.transform.localRotation = Quaternion.identity;
-                hooked = false;
+                StopHarpoon();
             }
         }
     }
-
+    private void StopHarpoon()
+    {
+        currentTarget = null;
+        harpoon.transform.localPosition = harpoonOrigin;
+        harpoon.transform.localRotation = Quaternion.identity;
+        hooked = false;
+    }
     IEnumerator FireHarpoon()
     {
         if (currentTarget != null)
@@ -214,6 +225,11 @@ public class Car : MonoBehaviour
         HandleSwimming();
         HandleHarpoon();
         UpdateWheels();
+
+        if (verticalInput > 0.0f)
+            tailSmoke.Play();
+        else
+            tailSmoke.Stop();
     }
     private void HandleHarpoon()
     {

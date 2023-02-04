@@ -24,7 +24,11 @@ public class Tree : MonoBehaviour
     {
         
     }
-
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.m_player.GetComponent<Car>().NotifyDestroyed(this);
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
