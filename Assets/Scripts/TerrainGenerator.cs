@@ -8,15 +8,33 @@ public class TerrainGenerator : MonoBehaviour
 {
     Mesh mesh;
     
-    public GameObject treePrefab;
-    public GameObject grassPrefab;
+    [Header("Assets")]
+    public GameObject[] treePrefab;
+    public GameObject[] stonePrefab;
+    public GameObject[] grassPrefab;
+    public GameObject[] windPrefab;
+
     public GameObject playerPlatform;
+    private List<Tuple<float, GameObject>> windList = new List<Tuple<float, GameObject>>();
 
     Vector3[] vertices;
     int[] triangles;
     public int TreeCount = 10;
     public int GrassCount = 10;
+    public int StoneCount = 10;
+    public int WindCount = 10;
 
+    [Range(1f, 10f)]
+    public float windMinTime;
+    [Range(1f, 10f)]
+    public float windMaxTime;
+
+    [Range(0f, 10f)]
+    public float windAdditionalHeightMin;
+    [Range(0f, 10f)]
+    public float windAdditionalHeightMax;
+
+    [Header("Generation")]
     public int seed;
 
     [Range(1, 500)]
@@ -103,6 +121,21 @@ public class TerrainGenerator : MonoBehaviour
             showPropMask = false;
             ShowPropMask();
         }
+
+        for (int i = 0; i < windList.Count; i++)
+        {
+            float new_time = windList[i].Item1 - Time.deltaTime;
+            if(new_time <= 0)
+            {
+                new_time = UnityEngine.Random.Range(windMinTime, windMaxTime);
+                Vector3 height = Vector3.up * UnityEngine.Random.Range(windAdditionalHeightMin, windAdditionalHeightMax);
+                windList[i].Item2.GetComponent<ParticleSystem>().Stop();
+                windList[i].Item2.transform.position = transform.position + GetPointAt(UnityEngine.Random.Range(0, cellSize), UnityEngine.Random.Range(0, cellSize)) + height;
+                windList[i].Item2.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360f), 0);
+                windList[i].Item2.GetComponent<ParticleSystem>().Play();
+            }
+            windList[i] = Tuple.Create(new_time, windList[i].Item2);
+        }
     }
 
     void Generate()
@@ -128,12 +161,28 @@ public class TerrainGenerator : MonoBehaviour
         UpdateMesh();
         
         for (int i = 0; i < TreeCount; i++)
-            factory.SpawnTree(treePrefab, PlaceTree());
+            factory.SpawnTree(treePrefab[UnityEngine.Random.Range(0, treePrefab.Length)], PlaceTree());
+
+        for (int i = 0; i < StoneCount; i++)
+            factory.SpawnBigRock(stonePrefab[UnityEngine.Random.Range(0, treePrefab.Length)], PlaceTree());
+        
+        for (int i = 0; i < WindCount; i++)
+        {
+            float time = UnityEngine.Random.Range(windMinTime, windMaxTime);
+            Vector3 height = Vector3.up * UnityEngine.Random.Range(windAdditionalHeightMin, windAdditionalHeightMax);
+            GameObject wind = Instantiate(
+                windPrefab[UnityEngine.Random.Range(0, windPrefab.Length)],
+                transform.position + GetPointAt(UnityEngine.Random.Range(0, cellSize), UnityEngine.Random.Range(0, cellSize)) + height,
+                Quaternion.Euler(0, UnityEngine.Random.Range(0, 360f), 0)
+                );
+            windList.Add(Tuple.Create(time, wind));
+        }
+
         for (int i = 0; i < GrassCount; i++)
         {
             Vector3 loc;
             if(PlaceGrass(out loc))
-                factory.SpawnGrass(grassPrefab, loc);
+                factory.SpawnGrass(grassPrefab[UnityEngine.Random.Range(0, treePrefab.Length)], loc);
         }
             
     }
@@ -284,12 +333,17 @@ public class TerrainGenerator : MonoBehaviour
         {
             BoxCollider box = prop.GetComponentInChildren<BoxCollider>();
             CapsuleCollider capsule = prop.GetComponentInChildren<CapsuleCollider>();
+            CapsuleCollider sphere = prop.GetComponentInChildren<CapsuleCollider>();
             if (box && BoxColliderContains(box, this.transform.position + new Vector3(x, heightCurve.Evaluate(landHeight), z), propOffset))
             {
                 height += prop.transform.position.y;
                 count++;
             }
-            else if(capsule && CircleColliderContains(capsule, this.transform.position + new Vector3(x, heightCurve.Evaluate(landHeight), z), propOffset))
+            else if (capsule && CircleColliderContains(capsule, this.transform.position + new Vector3(x, heightCurve.Evaluate(landHeight), z), propOffset))
+            {
+                height += prop.transform.position.y;
+                count++;
+            } else if (sphere && CircleColliderContains(sphere, this.transform.position + new Vector3(x, heightCurve.Evaluate(landHeight), z), propOffset))
             {
                 height += prop.transform.position.y;
                 count++;
@@ -300,6 +354,10 @@ public class TerrainGenerator : MonoBehaviour
     }
 
     private bool CircleColliderContains(CapsuleCollider capsule, Vector3 point, float offset = 1)
+    {
+        return Vector3.Distance(point, capsule.bounds.center) <= capsule.radius * offset;
+    }
+    private bool CircleColliderContains(SphereCollider capsule, Vector3 point, float offset = 1)
     {
         return Vector3.Distance(point, capsule.bounds.center) <= capsule.radius * offset;
     }
