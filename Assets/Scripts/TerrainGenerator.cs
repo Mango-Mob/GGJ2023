@@ -9,11 +9,13 @@ public class TerrainGenerator : MonoBehaviour
     Mesh mesh;
     
     public GameObject treePrefab;
+    public GameObject grassPrefab;
     public GameObject playerPlatform;
 
     Vector3[] vertices;
     int[] triangles;
     public int TreeCount = 10;
+    public int GrassCount = 10;
 
     public int seed;
 
@@ -126,12 +128,14 @@ public class TerrainGenerator : MonoBehaviour
         UpdateMesh();
         
         for (int i = 0; i < TreeCount; i++)
+            factory.SpawnTree(treePrefab, PlaceTree());
+        for (int i = 0; i < GrassCount; i++)
         {
-            Vector2Int[] left = { new Vector2Int(0, 0), new Vector2Int(cellSize, cellSize / 2) };
-            Vector2Int[] right = { new Vector2Int(0, cellSize / 2), new Vector2Int(cellSize, cellSize) };
-
-            factory.SpawnTree(treePrefab, PlaceTree(left, right));
+            Vector3 loc;
+            if(PlaceGrass(out loc))
+                factory.SpawnTree(grassPrefab, loc);
         }
+            
     }
     void ShowFalloff()
     {
@@ -329,9 +333,10 @@ public class TerrainGenerator : MonoBehaviour
     #endregion
 
     #region Props
-    public Vector3 PlaceTree(Vector2Int[] left, Vector2Int[] right, bool is_hSplit = true)
+    public Vector3 PlaceTree()
     {
-        int safety = 5;
+        int safety = 15; 
+        RaycastHit cast;
         do
         {
             Vector3 testLocation = new Vector3(
@@ -340,7 +345,7 @@ public class TerrainGenerator : MonoBehaviour
                  UnityEngine.Random.Range(0, terrainScale)
                 );
 
-            RaycastHit cast;
+            
             if( Physics.Raycast(transform.position + testLocation, Vector3.down * 20, out cast) )
             {
                 if (cast.point.y >= heightCurve.Evaluate(landHeight) && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value)
@@ -351,59 +356,34 @@ public class TerrainGenerator : MonoBehaviour
 
         } while (safety-- > 0);
 
-        return Vector3.zero;
-        //float max_left, max_right;
+        return cast.point;
+    }
+    public bool PlaceGrass( out Vector3 result)
+    {
+        int safety = 5;
+        RaycastHit cast;
+        do
+        {
+            Vector3 testLocation = new Vector3(
+                UnityEngine.Random.Range(0, terrainScale),
+                10,
+                 UnityEngine.Random.Range(0, terrainScale)
+                );
 
-        //float left_average = GetAverageHeight(left[0], left[1], out max_left);
-        //float right_average = GetAverageHeight(right[0], right[1], out max_right);
 
-        //float left_weight = GetAsProportion(left_average, heightCurve[0].value, heightCurve[heightCurve.length - 1].value);
-        //float left_max_weight = GetAsProportion(max_left, heightCurve[0].value, heightCurve[heightCurve.length - 1].value);
-        //float right_weight = GetAsProportion(right_average, heightCurve[0].value, heightCurve[heightCurve.length - 1].value);
-        //float right_max_weight = GetAsProportion(max_right, heightCurve[0].value, heightCurve[heightCurve.length - 1].value);
+            if (Physics.Raycast(transform.position + testLocation, Vector3.down * 20, out cast))
+            {
+                if (cast.point.y >= heightCurve.Evaluate(landHeight) && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value)
+                {
+                    result = cast.point;
+                    return true; 
+                }
+            }
 
-        //left_weight *= (left_max_weight) / (left_max_weight + right_max_weight);
-        //right_weight *= (right_max_weight) / (left_max_weight + right_max_weight);
+        } while (safety-- > 0);
 
-        //float result = UnityEngine.Random.Range(0, left_weight + right_weight);
-        //if ( result <= left_weight)
-        //{
-        //    float left_size = Vector2Int.Distance(left[0], left[1]);
-        //    if(left_size < 10)
-        //    {   //Break
-        //        Vector3 left_point = GetPointAt(left[0].x, left[0].y);
-        //        Vector3 right_point = GetPointAt(left[1].x, left[1].y);
-        //        return new Vector3(
-        //            Mathf.Lerp(left_point.x, right_point.x, UnityEngine.Random.Range(0, 1)),
-        //            Mathf.Lerp(left_point.y, right_point.y, 0.5f), 
-        //            Mathf.Lerp(left_point.z, right_point.z, UnityEngine.Random.Range(0, 1))
-        //            ); 
-        //    }
-        //    //Select Left
-        //    Vector2Int[] split = (is_hSplit) ? hSplit(left) : vSplit(left);
-        //    Vector2Int[] new_left = { split[0], split[1] };
-        //    Vector2Int[] new_right = { split[2], split[3] };
-        //    return PlaceTree(new_left, new_right, !is_hSplit);
-        //}
-        //else
-        //{
-        //    float right_size = Vector2Int.Distance(right[0], right[1]);
-        //    if (right_size < 10)
-        //    {   //Break
-        //        Vector3 left_point = GetPointAt(right[0].x, right[0].y);
-        //        Vector3 right_point = GetPointAt(right[1].x, right[1].y);
-        //        return new Vector3(
-        //            Mathf.Lerp(left_point.x, right_point.x, UnityEngine.Random.Range(0, 1)),
-        //            0,
-        //            Mathf.Lerp(left_point.z, right_point.z, UnityEngine.Random.Range(0, 1))
-        //            );
-        //    }
-        //    //Select Right
-        //    Vector2Int[] split = (is_hSplit) ? hSplit(right) : vSplit(right);
-        //    Vector2Int[] new_left = { split[0], split[1] };
-        //    Vector2Int[] new_right = { split[2], split[3] };
-        //    return PlaceTree(new_left, new_right, !is_hSplit);
-        //}
+        result = cast.point;
+        return false;
     }
     #endregion
 

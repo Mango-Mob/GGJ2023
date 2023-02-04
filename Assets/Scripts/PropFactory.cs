@@ -11,17 +11,36 @@ public class PropFactory : MonoBehaviour
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
         propObj.transform.position = position;
 
-        //RaycastHit result;
-        //if (Physics.Raycast(propObj.transform.position + new Vector3(0, 1, 0), Vector3.down, out result))
-        //{
-        //    propObj.transform.position = result.point;
-        //}
+        RaycastHit result;
+        if (Physics.Raycast(propObj.transform.position + new Vector3(0, 1, 0), Vector3.down, out result))
+        {
+            propObj.transform.up = result.normal;
+        }
 
         Prop prop = propObj.AddComponent<Prop>();
         prop.owner = this;
         propList.Add(prop);
     }
 
+    public void Collect(Prop prop)
+    {
+        Remove(prop);
+        GameObject.Instantiate(Resources.Load<GameObject>("MoneyProjectile"), prop.GetComponent<Collider>().bounds.center, Quaternion.identity);
+        Destroy(prop.gameObject, 1.0f);
+        GameManager.Instance.AddCash(200);
+        SpawnTree(GetComponent<TerrainGenerator>().treePrefab, GetComponent<TerrainGenerator>().PlaceTree());
+    }
+
+    public void SpawnGrass(GameObject prefab, Vector3 position)
+    {
+        GameObject propObj = GameObject.Instantiate(prefab, this.transform);
+        propObj.transform.position = position;
+        propObj.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360.0f), 0);
+
+        Prop prop = propObj.AddComponent<Prop>();
+        prop.owner = this;
+        propList.Add(prop);
+    }
     public void SpawnPlatform(GameObject prefab, Vector3 localPosition)
     {
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
