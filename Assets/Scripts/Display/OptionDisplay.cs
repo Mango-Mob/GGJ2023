@@ -22,4 +22,9 @@ public class OptionDisplay : MonoBehaviour
                 bottem_text.SetText("Nothing");
         }
     }
+
+    public void GiveReward()
+    {
+
+    }
 }
