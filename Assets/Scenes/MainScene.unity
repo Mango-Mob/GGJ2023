@@ -204,8 +204,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treePrefab: {fileID: 1015509493878918148, guid: 04c39f4a8068476488bb79a795a955f2, type: 3}
+  grassPrefab: {fileID: 4387785167557321355, guid: b84ec5977c1930c43b73f1a394973132, type: 3}
   playerPlatform: {fileID: 8924474229573963346, guid: d9773ecdfc7d16c4f87cbe1443769fff, type: 3}
   TreeCount: 30
+  GrassCount: 100
   seed: 0
   terrainScale: 400
   cellSize: 100

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8422895653392761036}
   - component: {fileID: 4563084327486620087}
   - component: {fileID: 1396208525748289924}
+  - component: {fileID: 4329205399143133641}
   m_Layer: 0
   m_Name: Tree_1
   m_TagString: Untagged
@@ -78,8 +79,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centreOfMass: {fileID: 9207945738985945864}
+  branches: {fileID: 4365745833424892786}
+  onHitMesh: {fileID: 6848928758038697473, guid: db884b77e88758d4f82ff78b5ec8cdd7, type: 3}
   breakVelocity: 5
   impactMult: 2000
+--- !u!95 &4329205399143133641
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015509493878918148}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d2ebed54fc0caa438041bc0ddcf16ae, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2374218021454730524
 GameObject:
   m_ObjectHideFlags: 0
