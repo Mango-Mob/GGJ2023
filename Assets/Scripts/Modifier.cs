@@ -54,4 +54,17 @@ public class Modifier : ScriptableObject
                 return "NULL";
         }
     }
+
+    public void Apply(GameObject m_player)
+    {
+        for (int i = 0; i < Changes.Count; i++)
+        {
+
+        }
+        Car car = m_player.GetComponent<Car>();
+
+        car.ApplyStat(Changes[0].to, Changes[0].value);
+        if(Changes.Count > 1)
+            car.ApplyStat(Changes[1].to, -Changes[1].value);
+    }
 }

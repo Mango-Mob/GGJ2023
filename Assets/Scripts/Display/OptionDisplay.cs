@@ -25,6 +25,6 @@ public class OptionDisplay : MonoBehaviour
 
     public void GiveReward()
     {
-
+        modifier.Apply(GameManager.Instance.m_player);
     }
 }
