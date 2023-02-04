@@ -24,7 +24,8 @@ public class BuyCardZone : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
-            if(GameManager.cash >= (int)priceScale.Evaluate(total_bought))
+            other.GetComponent<Car>().HaltWheels();
+            if (GameManager.cash >= (int)priceScale.Evaluate(total_bought))
             {
                 GameManager.Instance.Buy(priceScale.Evaluate(total_bought++));
             }
