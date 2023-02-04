@@ -30,7 +30,7 @@ public class ScoreDisplay : MonoBehaviour
             render.SetText(ToTimeString(value));
     }
 
-    string ToTimeString(float value)
+    public static string ToTimeString(float value)
     {
         if (value <= 0)
             return $"00:00";

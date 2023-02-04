@@ -10,14 +10,18 @@ public class GameManager : Singleton<GameManager>
     public Camera m_activeCamera;
     public bool IsInCombat = false;
 
-    public float cash;
-    public float score;
+    public static float cash;
+    public static float score;
+    public static float elapsed_time = 0;
     public float timer = 3 * 60f;
-
     public float time_scale = 1.0f;
     protected override void Awake()
     {
         base.Awake();
+
+        cash = 0;
+        score = 0;
+        elapsed_time = 0;
     }
     // Start is called before the first frame update
     void Start()
@@ -39,7 +43,7 @@ public class GameManager : Singleton<GameManager>
         Cursor.visible = time_scale == 0f;
         if(timer <= 0)
         {
-            //game Over
+            SceneManager.LoadScene("EndScene");
         }
     }
 

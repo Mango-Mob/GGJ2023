@@ -22,8 +22,8 @@ public class PlayerHUD : MonoBehaviour
     {
         if(GameManager.HasInstance())
         {
-            score.value = GameManager.Instance.score;
-            cash.value = GameManager.Instance.cash;
+            score.value = GameManager.score;
+            cash.value = GameManager.cash;
             timer.value = GameManager.Instance.timer;
         }
 
