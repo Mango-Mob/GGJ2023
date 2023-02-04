@@ -119,7 +119,7 @@ public class TerrainGenerator : MonoBehaviour
         
         factory.SpawnPlatform(playerPlatform, new Vector3(
            terrainScale/2,
-            heightCurve.Evaluate(UnityEngine.Random.Range(landHeight, heightCurve[heightCurve.length - 1].time)),
+            heightCurve.Evaluate(0.7f),
             terrainScale/2
             ));
         
@@ -133,7 +133,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             Vector3 loc;
             if(PlaceGrass(out loc))
-                factory.SpawnTree(grassPrefab, loc);
+                factory.SpawnGrass(grassPrefab, loc);
         }
             
     }
@@ -348,7 +348,9 @@ public class TerrainGenerator : MonoBehaviour
             
             if( Physics.Raycast(transform.position + testLocation, Vector3.down * 20, out cast) )
             {
-                if (cast.point.y >= heightCurve.Evaluate(landHeight) && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value)
+                if (cast.point.y >= heightCurve.Evaluate(landHeight) 
+                    && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value
+                    && Vector3.Distance(cast.point, new Vector3(0, cast.point.y, 0)) > 40)
                 {
                     return cast.point;
                 }
@@ -373,7 +375,9 @@ public class TerrainGenerator : MonoBehaviour
 
             if (Physics.Raycast(transform.position + testLocation, Vector3.down * 20, out cast))
             {
-                if (cast.point.y >= heightCurve.Evaluate(landHeight) && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value)
+                if (cast.point.y >= heightCurve.Evaluate(landHeight) 
+                    && PropMask(testLocation.x, testLocation.z) >= heightCurve[0].value 
+                    && Vector3.Distance(cast.point, new Vector3(0, cast.point.y, 0)) > 30)
                 {
                     result = cast.point;
                     return true; 
