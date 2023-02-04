@@ -27,9 +27,9 @@ public class Modifier : ScriptableObject
                     return $"Your Acceleration is decreased by {-stat.value}";
             case Stat.Modifies.CoolDown:
                 if (stat.value > 0)
-                    return $"Your Boost Cooldown is decreased by {stat.value}";
+                    return $"Your Boost Cooldown is decreased by {stat.value}s";
                 else
-                    return $"Your Boost Cooldown is increased by {-stat.value}";
+                    return $"Your Boost Cooldown is increased by {-stat.value}s";
             case Stat.Modifies.Impact:
                 if (stat.value > 0)
                     return $"Your Impact is increased by {stat.value}";
