@@ -32,7 +32,7 @@ public class Tree : MonoBehaviour
             if (rigidbody.isKinematic)
                 collision.collider.GetComponentInParent<Car>().HaltWheels();
 
-            if (collision.relativeVelocity.magnitude > breakVelocity)
+            if (collision.relativeVelocity.magnitude > breakVelocity && rigidbody.isKinematic)
             {
                 Debug.Log(collision.relativeVelocity.magnitude);
                 GetComponentInChildren<MeshFilter>().mesh = onHitMesh;
@@ -40,6 +40,11 @@ public class Tree : MonoBehaviour
                 rigidbody.isKinematic = false;
                 rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
                 GetComponent<MultiAudioAgent>().PlayRandom();
+                var particles = GetComponentsInChildren<ParticleSystem>();
+                foreach (var item in particles)
+                {
+                    item.Play();
+                }
             }
         }
     }
