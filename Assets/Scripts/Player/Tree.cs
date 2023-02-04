@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
+    public Transform centreOfMass;
+    public GameObject branches;
+    public Mesh onHitMesh;
+
     private Rigidbody rigidbody;
     [SerializeField] private float breakVelocity = 5.0f;
     [SerializeField] private float impactMult = 2000.0f;
@@ -12,6 +16,7 @@ public class Tree : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        rigidbody.centerOfMass = centreOfMass.localPosition;
     }
 
     // Update is called once per frame
@@ -28,10 +33,13 @@ public class Tree : MonoBehaviour
                 collision.collider.GetComponentInParent<Car>().HaltWheels();
 
             if (collision.relativeVelocity.magnitude > breakVelocity)
+            {
                 Debug.Log(collision.relativeVelocity.magnitude);
+                GetComponentInChildren<MeshFilter>().mesh = onHitMesh;
+                branches.SetActive(false);
                 rigidbody.isKinematic = false;
                 rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
-
+            }
         }
     }
 }
