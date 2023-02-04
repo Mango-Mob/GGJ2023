@@ -644,6 +644,7 @@ MonoBehaviour:
   maxSteeringAngle: 45
   nosMult: 5
   jumpVelocity: 5
+  airTiltForce: 50
   xRotLock: 30
   zRotLock: 30
   centerOfMass: {fileID: 817793569}
