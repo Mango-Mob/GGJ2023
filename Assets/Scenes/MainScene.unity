@@ -217,7 +217,7 @@ MonoBehaviour:
   flattenerRange: 140
   flattenerInfluence: 0.4
   propOffset: 1.9
-  propInfluence: 0.8
+  propInfluence: 0.7
   heightCurve:
     serializedVersion: 2
     m_Curve:
