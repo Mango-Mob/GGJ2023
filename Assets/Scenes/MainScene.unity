@@ -203,10 +203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb0a901048709f49830950093fb2895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 2005462381331605065, guid: 21f4a356e501f7a448b75a56e7fbfd72, type: 3}
+  treePrefab: {fileID: 1015509493878918148, guid: 04c39f4a8068476488bb79a795a955f2, type: 3}
   playerPlatform: {fileID: 8924474229573963346, guid: d9773ecdfc7d16c4f87cbe1443769fff, type: 3}
   TreeCount: 10
-  seed: 137875
+  seed: 0
   terrainScale: 300
   cellSize: 250
   octaves: 6
