@@ -15,6 +15,24 @@ public class RewardDisplay : MonoBehaviour
         casheOptions.AddRange(allOptions);
         allOptions.Sort((a, b) => 1 - 2 * Random.Range(0, 2));
     }
+    public void Update()
+    {
+        if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.LEFT, 0))
+        {
+            option1.GiveReward();
+            gameObject.SetActive(false);
+        }
+        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.UP, 0))
+        {
+            option2.GiveReward();
+            gameObject.SetActive(false);
+        }
+        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.RIGHT, 0))
+        {
+            option3.GiveReward();
+            gameObject.SetActive(false);
+        }
+    }
     public void OnEnable()
     {
         if(casheOptions.Count == 0)

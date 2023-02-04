@@ -290,6 +290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Option (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2047525311459317686, guid: 6169a760302a8874e861a1918460c89b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8c95b3813dcd03a41bcaa42edb035bfc, type: 3}
     - target: {fileID: 2976109626985152867, guid: 6169a760302a8874e861a1918460c89b, type: 3}
       propertyPath: m_TargetGraphic
       value: 
@@ -470,6 +474,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Option (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2047525311459317686, guid: 6169a760302a8874e861a1918460c89b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 111378b121cc1654cb271c3fa4513f4f, type: 3}
     - target: {fileID: 2976109626985152867, guid: 6169a760302a8874e861a1918460c89b, type: 3}
       propertyPath: m_TargetGraphic
       value: 
