@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     internal void Buy(float value)
     {
         reward.gameObject.SetActive(true);
+        timer += (value / 100) * 15f;
         cash -= value;
     }
 
@@ -59,7 +60,6 @@ public class GameManager : Singleton<GameManager>
     internal void AddCash(int _cash)
     {
         cash += _cash;
-        timer += (_cash / 100) * 15f;
         score += _cash;
     }
 }
