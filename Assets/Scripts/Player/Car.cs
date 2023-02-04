@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 public class Car : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class Car : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] private VisualEffect tailSmoke;
+    [SerializeField] private WorldToCanvas targetUI;
     public void ApplyStat(Modifier.Stat.Modifies to, float value)
     {
         switch (to)
@@ -106,6 +108,7 @@ public class Car : MonoBehaviour
 
         harpoonOrigin = harpoon.transform.localPosition;
         GameManager.Instance.m_player = gameObject;
+        GameManager.Instance.m_activeCamera = playerCamera;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
@@ -116,6 +119,7 @@ public class Car : MonoBehaviour
     }
     private void Update()
     {
+
         ropeRenderer.enabled = hooked;
         if (!hooked)
         {
@@ -179,6 +183,14 @@ public class Car : MonoBehaviour
                 StopHarpoon();
             }
         }
+
+        targetUI.GetComponent<Image>().enabled = !hooked && currentTarget != null;
+
+        if (currentTarget)
+            targetUI.m_anchorTransform = currentTarget.centreOfMass;
+        else
+            targetUI.m_anchorTransform = null;
+
     }
     private void StopHarpoon()
     {
