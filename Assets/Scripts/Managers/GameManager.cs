@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
     internal void Buy(float value)
     {
         reward.gameObject.SetActive(true);
-        timer += (value / 100) * 15f;
+        timer += (value / 100) * 10f;
         cash -= value;
     }
 
