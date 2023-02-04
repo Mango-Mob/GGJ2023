@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1396208525748289924}
   - component: {fileID: 4329205399143133641}
   - component: {fileID: 7027740764736558019}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_1
   m_TagString: Wood
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9207945738985945864}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CentreOfMass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2617116215648912866}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_1ButLonger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 8106366031030716691}
   - component: {fileID: 7436303398361292882}
   - component: {fileID: 8935710690992024735}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_main_Tree_1_Branches
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 6830490816526624744}
   - component: {fileID: 3651340942719953853}
   - component: {fileID: 8574099230003732720}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_main_Tree_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
