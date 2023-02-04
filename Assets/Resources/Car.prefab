@@ -640,7 +640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorForce: 1200
-  breakForce: 1200
+  brakeForce: 800
   maxSteeringAngle: 45
   nosMult: 5
   jumpVelocity: 5
