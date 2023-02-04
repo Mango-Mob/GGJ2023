@@ -15,6 +15,15 @@ public class GameManager : Singleton<GameManager>
     public static float elapsed_time = 0;
     public float timer = 3 * 60f;
     public float time_scale = 1.0f;
+
+    public RewardDisplay reward;
+
+    internal void Buy(float value)
+    {
+        reward.gameObject.SetActive(true);
+        cash -= value;
+    }
+
     protected override void Awake()
     {
         base.Awake();
