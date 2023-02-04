@@ -1067,6 +1067,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7666612347221876863}
     m_Modifications:
+    - target: {fileID: 1971243556610725699, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_Asset
+      value: 
+      objectReference: {fileID: 8926484042661614526, guid: 076ab97076dc2b04fb097338620cc152, type: 3}
     - target: {fileID: 1971243556610725709, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_Layer
       value: 1
@@ -1114,10 +1118,6 @@ PrefabInstance:
     - target: {fileID: 2750438179710187832, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750438179710187833, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
-      propertyPath: airTiltForce
-      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2750438179710187833, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: playerCamera
