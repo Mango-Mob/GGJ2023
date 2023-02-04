@@ -6,7 +6,7 @@ public class Car : MonoBehaviour
 {
     public static void Spawn(Vector3 _position, Quaternion _rotation)
     {
-        GameObject prefab = Resources.Load<GameObject>("Car");
+        GameObject prefab = Resources.Load<GameObject>("Player");
         GameObject newCar = Instantiate(prefab, _position, _rotation);
     }
 
