@@ -639,15 +639,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10390e0e57a4bac45b2a207dc22f07cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
   motorForce: 1200
   brakeForce: 800
   maxSteeringAngle: 45
   nosMult: 5
   jumpVelocity: 5
-  airTiltForce: 50
+  airTiltForce: 100
   xRotLock: 30
   zRotLock: 30
   centerOfMass: {fileID: 817793569}
+  waterFloatVelocity: 1100
+  waterFloatDepth: 0
+  waterDamping: 2
+  swimAcceleration: 20
+  swimTorqueMult: 1
   frontLeftWheelCollider: {fileID: 2750438180655874721}
   frontRightWheelCollider: {fileID: 2750438180545189330}
   backLeftWheelCollider: {fileID: 2750438180622035628}
