@@ -6,16 +6,16 @@ public class PropFactory : MonoBehaviour
 {
     public List<Prop> propList = new List<Prop>();
 
-    public void SpawnTree(GameObject prefab, Vector3 localPosition)
+    public void SpawnTree(GameObject prefab, Vector3 position)
     {
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
-        propObj.transform.localPosition = localPosition;
+        propObj.transform.position = position;
 
-        RaycastHit result;
-        if (Physics.Raycast(propObj.transform.position + new Vector3(0, 1, 0), Vector3.down, out result))
-        {
-            propObj.transform.position = result.point - (result.normal * 0.25f);
-        }
+        //RaycastHit result;
+        //if (Physics.Raycast(propObj.transform.position + new Vector3(0, 1, 0), Vector3.down, out result))
+        //{
+        //    propObj.transform.position = result.point;
+        //}
 
         Prop prop = propObj.AddComponent<Prop>();
         prop.owner = this;
