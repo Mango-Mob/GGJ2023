@@ -675,6 +675,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   ropeRenderer: {fileID: 3609900581236274712}
+  tailSmoke: {fileID: 1971243556610725699}
+  targetUI: {fileID: 0}
 --- !u!65 &6470494991929503720
 BoxCollider:
   m_ObjectHideFlags: 0

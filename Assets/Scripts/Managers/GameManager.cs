@@ -35,6 +35,8 @@ public class GameManager : Singleton<GameManager>
     {
         timer -= Time.deltaTime * time_scale;
 
+        Cursor.lockState = (Cursor.visible) ? CursorLockMode.None: CursorLockMode.Locked;
+        Cursor.visible = time_scale == 0f;
         if(timer <= 0)
         {
             //game Over

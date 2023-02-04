@@ -24,7 +24,7 @@ public class PauseDisplay : MonoBehaviour
     public void OnDisable()
     {
         if (GameManager.HasInstance())
-            GameManager.Instance.time_scale = 0.0f;
+            GameManager.Instance.time_scale = 1.0f;
     }
 
     public void Quit()

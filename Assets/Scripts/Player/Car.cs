@@ -119,6 +119,11 @@ public class Car : MonoBehaviour
     }
     private void Update()
     {
+        if(GameManager.Instance.time_scale == 0)
+        {
+            //We are paused!
+            return;
+        }
 
         ropeRenderer.enabled = hooked;
         if (!hooked)
