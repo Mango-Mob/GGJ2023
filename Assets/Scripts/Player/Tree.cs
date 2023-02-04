@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
+    public Transform centreOfMass;
     private Rigidbody rigidbody;
     [SerializeField] private float breakVelocity = 5.0f;
     [SerializeField] private float impactMult = 2000.0f;
@@ -12,6 +13,7 @@ public class Tree : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        rigidbody.centerOfMass = centreOfMass.localPosition;
     }
 
     // Update is called once per frame
