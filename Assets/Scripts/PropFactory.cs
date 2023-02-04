@@ -27,6 +27,9 @@ public class PropFactory : MonoBehaviour
         GameObject propObj = GameObject.Instantiate(prefab, this.transform);
         propObj.transform.localPosition = localPosition;
 
+        PlayerSpawnLocation spawn = propObj.GetComponentInChildren<PlayerSpawnLocation>();
+        Car.Spawn(spawn.transform.position, spawn.transform.rotation);
+
         Prop prop = propObj.AddComponent<Prop>();
         prop.owner = this;
         propList.Add(prop);

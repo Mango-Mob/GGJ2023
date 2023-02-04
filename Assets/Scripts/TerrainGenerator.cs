@@ -38,6 +38,11 @@ public class TerrainGenerator : MonoBehaviour
     [Range(0f, 1f)]
     public float flattenerInfluence = 0.5f;
 
+    [Range(0.8f, 3f)]
+    public float propOffset = 1f;
+
+    [Range(0f, 1f)]
+    public float propInfluence = 0.5f;
     public AnimationCurve heightCurve;
     Vector2 origin;
 
@@ -54,6 +59,7 @@ public class TerrainGenerator : MonoBehaviour
     public bool showFlattener = false;
     public bool showPropMask = false;
 
+    
     private PropFactory factory;
     // Start is called before the first frame update
     void Start()
@@ -102,6 +108,7 @@ public class TerrainGenerator : MonoBehaviour
         if (seed == 0)
             seed = (int)UnityEngine.Random.Range(1, 10000000);
 
+        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
         UnityEngine.Random.InitState(seed);
 
         factory.Clear();
@@ -125,14 +132,13 @@ public class TerrainGenerator : MonoBehaviour
 
             factory.SpawnTree(treePrefab, PlaceTree(left, right));
         }
-
-        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
     }
     void ShowFalloff()
     {
         if (seed == 0)
             seed = (int)UnityEngine.Random.Range(1, 10000000);
 
+        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
         UnityEngine.Random.InitState(seed);
         factory.Clear();
 
@@ -140,14 +146,13 @@ public class TerrainGenerator : MonoBehaviour
 
         CreateShape(FallOffMap);
         UpdateMesh();
-
-        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
     }
     void ShowFlattener()
     {
         if (seed == 0)
             seed = (int)UnityEngine.Random.Range(1, 10000000);
 
+        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
         UnityEngine.Random.InitState(seed);
         factory.Clear();
 
@@ -155,13 +160,13 @@ public class TerrainGenerator : MonoBehaviour
 
         CreateShape(Flattener);
         UpdateMesh();
-
-        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
     }
     private void ShowPropMask()
     {
         if (seed == 0)
             seed = (int)UnityEngine.Random.Range(1, 10000000);
+
+        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
 
         UnityEngine.Random.InitState(seed);
         factory.Clear();
@@ -176,7 +181,7 @@ public class TerrainGenerator : MonoBehaviour
         CreateShape(PropMask);
         UpdateMesh();
 
-        transform.position = new Vector3(-terrainScale / 2, 0, -terrainScale / 2);
+       
     }
 
     #region Terrain
@@ -239,7 +244,11 @@ public class TerrainGenerator : MonoBehaviour
         a = Mathf.Clamp(a, heightCurve[0].time, heightCurve[heightCurve.length - 1].time);
 
         float ideal = Flattener(x, z);
-        return Mathf.Lerp(a, ideal, flattenerInfluence);
+        float mask = PropMask(x, z);
+        a = Mathf.Lerp(a, ideal, flattenerInfluence);
+        a = (mask >= landHeight) ? Mathf.Lerp(a, mask, propInfluence) : a;
+
+        return a;
     }
 
     private float FallOffMap(float x, float z)
@@ -269,14 +278,31 @@ public class TerrainGenerator : MonoBehaviour
         float count = 0;
         foreach (var prop in factory.propList)
         {
-            if (prop.GetComponent<Collider>().bounds.Contains(this.transform.localToWorldMatrix * new Vector3(x, heightCurve.Evaluate(landHeight), z)))
+            if(BoxColliderContains(prop.GetComponentInChildren<BoxCollider>(), this.transform.position + new Vector3(x, heightCurve.Evaluate(landHeight), z), propOffset))
             {
                 height += prop.transform.position.y;
                 count++;
             }
         }
+        
+        return GetAsProportion((count >= 1) ? height / count : heightCurve[0].value, heightCurve[0].value, heightCurve[heightCurve.length - 1].value);
+    }
 
-        return (count > 1) ? height / count : height;
+    private bool BoxColliderContains(BoxCollider collider, Vector3 point, float offset = 1)
+    {
+        float minX = collider.transform.position.x - (collider.bounds.size.x * offset) / 2;
+        float maxX = collider.transform.position.x + (collider.bounds.size.x * offset) / 2;
+        float minY = collider.transform.position.y - (collider.bounds.size.y * offset) / 2;
+        float maxY = collider.transform.position.y + (collider.bounds.size.y * offset) / 2;
+        float minZ = collider.transform.position.z - (collider.bounds.size.z * offset) / 2;
+        float maxZ = collider.transform.position.z + (collider.bounds.size.z * offset) / 2;
+
+        return point.x >= minX &&
+                point.x <= maxX &&
+                point.y >= minY &&
+                point.y <= maxY &&
+                point.z >= minZ &&
+                point.z <= maxZ;
     }
 
     void UpdateMesh()
