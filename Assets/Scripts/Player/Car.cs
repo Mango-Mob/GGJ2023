@@ -14,10 +14,14 @@ public class Car : MonoBehaviour
     private Collider mainCollider;
     private float verticalInput = 0.0f;
     private float horizontalInput = 0.0f;
+    private Vector2 tiltInput = Vector2.zero;
     private bool isBraking = false;
     private bool isNOS = false;
     private bool isJumping = false;
+    private bool isSwimming = false;
     private float steeringAngle = 0.0f;
+
+    [SerializeField] private Camera playerCamera;
 
     [Header("Settings")]
     [SerializeField] private float motorForce = 100.0f;
@@ -30,6 +34,13 @@ public class Car : MonoBehaviour
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
     [SerializeField] private Transform centerOfMass;
+
+    [Header("Swimming")]
+    [SerializeField] private float waterFloatVelocity = 2.5f;
+    [SerializeField] private float waterFloatDepth = 0.5f;
+    [SerializeField] private float waterDamping = 1.0f;
+    [SerializeField] private float swimAcceleration = 10.0f;
+    [SerializeField] private float swimTorqueMult = 10.0f;
 
     [Header("Wheels")]
     [SerializeField] private WheelCollider frontLeftWheelCollider;
@@ -59,6 +70,7 @@ public class Car : MonoBehaviour
         HandleMotor();
         HandleSteering();
         HandleJumping();
+        HandleSwimming();
         UpdateWheels();
 
 
@@ -91,7 +103,6 @@ public class Car : MonoBehaviour
             horizontalInput = InputManager.Instance.GetBindStick("Move").x;
         }
 
-        Debug.Log($"RPM: {frontLeftWheelCollider.rpm}, Input: {verticalInput}, {Mathf.Sign(verticalInput) != Mathf.Sign(frontLeftWheelCollider.rpm)}");
         float angle = Vector3.Angle(transform.forward, rigidbody.velocity);
         bool forceBrake = verticalInput != 0.0f && (angle > 90.0f && Mathf.Sign(verticalInput) == 1.0f || angle < 90.0f && Mathf.Sign(verticalInput) == -1.0f);
         
@@ -120,10 +131,11 @@ public class Car : MonoBehaviour
 
         if (isJumping && isGrounded)
         {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpVelocity, rigidbody.velocity.z);
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
+            rigidbody.velocity += transform.up * jumpVelocity;
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);
         }
-        Vector2 tiltInput = Vector2.zero;
+        tiltInput = Vector2.zero;
         tiltInput.x += InputManager.Instance.IsBindPressed("Move_Right") ? 1.0f : 0.0f;
         tiltInput.x -= InputManager.Instance.IsBindPressed("Move_Left") ? 1.0f : 0.0f;
         tiltInput.y += InputManager.Instance.IsBindPressed("Move_Forward") ? 1.0f : 0.0f;
@@ -132,7 +144,7 @@ public class Car : MonoBehaviour
         if (tiltInput.magnitude == 0.0f)
             tiltInput = InputManager.Instance.GetBindStick("Move");
 
-        if (!isGrounded)
+        if (!isGrounded && !isSwimming)
         {
             rigidbody.AddRelativeTorque(new Vector3(tiltInput.y * airTiltForce * Time.fixedDeltaTime, 0.0f, -tiltInput.x * airTiltForce * Time.fixedDeltaTime), ForceMode.Acceleration);
         }
@@ -141,27 +153,78 @@ public class Car : MonoBehaviour
         // Lock rotation max
         if (transform.rotation.eulerAngles.x > 180.0f && transform.rotation.eulerAngles.x < 360.0f - xRotLock)
         {
-            Debug.Log($"Locking -X: {transform.rotation.eulerAngles.x}");
+            //Debug.Log($"Locking -X: {transform.rotation.eulerAngles.x}");
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, rigidbody.angularVelocity.z);
             transform.rotation = Quaternion.Euler(-xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
         if (transform.rotation.eulerAngles.x < 180.0f && transform.rotation.eulerAngles.x > xRotLock)
         {
-            Debug.Log($"Locking X: {transform.rotation.eulerAngles.x}");
+            //Debug.Log($"Locking X: {transform.rotation.eulerAngles.x}");
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, rigidbody.angularVelocity.z);
             transform.rotation = Quaternion.Euler(xRotLock, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
         if (transform.rotation.eulerAngles.z > 180.0f && transform.rotation.eulerAngles.z < 360.0f - zRotLock)
         {
-            Debug.Log($"Locking -Z: {transform.rotation.eulerAngles.z}");
+            //Debug.Log($"Locking -Z: {transform.rotation.eulerAngles.z}");
             rigidbody.angularVelocity = new Vector3(rigidbody.angularVelocity.x, rigidbody.angularVelocity.y, 0.0f);
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -zRotLock);
         }
         if (transform.rotation.eulerAngles.z < 180.0f && transform.rotation.eulerAngles.z > zRotLock)
         {
-            Debug.Log($"Locking Z: {transform.rotation.eulerAngles.z}");
+            //Debug.Log($"Locking Z: {transform.rotation.eulerAngles.z}");
             rigidbody.angularVelocity = new Vector3(rigidbody.angularVelocity.x, rigidbody.angularVelocity.y, 0.0f);
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRotLock);
+        }
+    }
+    private void HandleSwimming()
+    {
+        isSwimming = transform.position.y < waterFloatDepth;
+
+        rigidbody.drag = isSwimming ? waterDamping : 0.0f;
+        rigidbody.angularDrag = isSwimming ? waterDamping : 0.05f;
+
+        if (isSwimming)
+        {
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, waterFloatVelocity * Mathf.Abs(transform.position.y - waterFloatDepth), rigidbody.velocity.z);
+
+            Vector3 cameraForward = playerCamera.transform.forward;
+            cameraForward.y = 0.0f;
+
+            Vector3 cameraRight = playerCamera.transform.right;
+            cameraRight.y = 0.0f;
+
+            Vector3 swimDirection = cameraForward * tiltInput.y + cameraRight * tiltInput.x;
+
+            rigidbody.AddForce(swimAcceleration * swimDirection, ForceMode.Acceleration);
+
+                float xDifference = 0.0f;
+                if (transform.rotation.eulerAngles.x > 180.0f)
+                {
+                    xDifference = transform.rotation.eulerAngles.x - 360.0f;
+                }
+                else if (transform.rotation.eulerAngles.x <= 180.0f)
+                {
+                    xDifference = transform.rotation.eulerAngles.x;
+                }
+
+                float zDifference = 0.0f;
+                if (transform.rotation.eulerAngles.z > 180.0f)
+                {
+                    zDifference = transform.rotation.eulerAngles.z - 360.0f;
+                }
+                else if (transform.rotation.eulerAngles.z <= 180.0f)
+                {
+                    zDifference = transform.rotation.eulerAngles.z;
+                }
+
+                Debug.Log($"{xDifference}, {zDifference}");
+                Vector3 swimTorque = new Vector3(-xDifference, 0.0f, zDifference);
+            rigidbody.AddTorque(swimTorque * swimTorqueMult * Time.fixedDeltaTime, ForceMode.Acceleration);
+
+            if (swimDirection.magnitude > 0.0f)
+            {
+                rigidbody.AddTorque(Vector3.up * -Vector3.SignedAngle(swimDirection, transform.forward, Vector3.up) * swimTorqueMult * Time.fixedDeltaTime, ForceMode.Acceleration);
+            }
         }
     }
     private void HandleSteering()
