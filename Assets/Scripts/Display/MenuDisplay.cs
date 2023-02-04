@@ -35,7 +35,10 @@ public class MenuDisplay : MonoBehaviour
             anim.SetTrigger("Open");
         }
     }
-
+    public void Logo()
+    {
+        Application.OpenURL("https://mangomob.itch.io/");
+    }
     public void Quit()
     {
         Application.Quit();
