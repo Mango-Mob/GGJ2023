@@ -8,14 +8,17 @@ public class BuyCardZone : MonoBehaviour
     public int total_bought;
 
     private Renderer renderer;
+    private Canvas canvas;
 
     private void Awake()
     {
-        renderer = GetComponent<Renderer>();    
+        renderer = GetComponent<Renderer>();
+        canvas = GetComponentInChildren<Canvas>();    
     }
     public void Update()
     {
         renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
+        canvas.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
     }
     private void OnTriggerEnter(Collider other)
     {
