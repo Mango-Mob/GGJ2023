@@ -41,6 +41,14 @@ public class SoloAudioAgent : AudioAgent
         }
     }
 
+    public void PlayOnce()
+    {
+        if(!IsPlaying())
+        {
+            Play();
+        }
+    }
+
     protected override void Update()
     {
         player.is3D = is3D;
