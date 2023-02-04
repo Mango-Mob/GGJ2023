@@ -53,6 +53,14 @@ public class Car : MonoBehaviour
     [SerializeField] private Transform backLeftWheelTransform;
     [SerializeField] private Transform backRightWheelTransform;
 
+    [Header("Harpoon")]
+    [SerializeField] private GameObject harpoonLauncher;
+    [SerializeField] private GameObject harpoon;
+
+    private Tree currentTarget;
+    private GameObject harpoonProjectile;
+    private bool hooked = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +69,20 @@ public class Car : MonoBehaviour
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
+    }
+
+    private void Update()
+    {
+        float harpoonRotation = playerCamera.transform.eulerAngles.y;
+        harpoonLauncher.transform.eulerAngles = new Vector3(0.0f, harpoonRotation, 0.0f);
+
+        if (InputManager.Instance.IsBindDown("Fire"))
+        {
+            hooked = !hooked;
+
+            
+            harpoon.SetActive(!harpoon.activeSelf);
+        }
     }
 
     // Update is called once per frame
