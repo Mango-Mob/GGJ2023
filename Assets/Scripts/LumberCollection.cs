@@ -17,5 +17,14 @@ public class LumberCollection : MonoBehaviour
                     Destroy(other.gameObject);
             }
         }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
+        {
+            Tree tree = other.GetComponent<Car>().GetHookedTree();
+            if (tree)
+            {
+                Prop prop = tree.GetComponent<Prop>();
+                prop?.owner.Collect(prop);
+            }
+        }
     }
 }
