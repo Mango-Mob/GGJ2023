@@ -6,6 +6,9 @@ public class PlayerHUD : MonoBehaviour
 {
     public ScoreDisplay score;
     public ScoreDisplay cash;
+    public ScoreDisplay timer;
+
+    public RewardDisplay reward;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +23,7 @@ public class PlayerHUD : MonoBehaviour
         {
             score.value = GameManager.Instance.score;
             cash.value = GameManager.Instance.cash;
+            timer.value = GameManager.Instance.timer;
         }
     }
 }

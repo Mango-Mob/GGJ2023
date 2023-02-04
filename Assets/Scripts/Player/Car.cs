@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,27 @@ public class Car : MonoBehaviour
     [SerializeField] private GameObject harpoonLauncher;
     [SerializeField] private GameObject harpoon;
 
+    public void ApplyStat(Modifier.Stat.Modifies to, float value)
+    {
+        switch (to)
+        {
+            case Modifier.Stat.Modifies.Accel:
+                break;
+            case Modifier.Stat.Modifies.Top_Speed:
+                break;
+            case Modifier.Stat.Modifies.Impact:
+                break;
+            case Modifier.Stat.Modifies.Steering:
+                break;
+            case Modifier.Stat.Modifies.Jump:
+                break;
+            case Modifier.Stat.Modifies.Swim_Speed:
+                break;
+            default:
+                break;
+        }
+    }
+
     private Tree currentTarget;
     private GameObject harpoonProjectile;
     private bool hooked = false;
@@ -67,7 +89,7 @@ public class Car : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         mainCollider = GetComponent<BoxCollider>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
-
+        GameManager.Instance.m_player = gameObject;
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
 
