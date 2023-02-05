@@ -81,6 +81,16 @@ public class Car : MonoBehaviour
     [SerializeField] private VisualEffect tailSmoke;
     [SerializeField] private WorldToCanvas targetUI;
 
+    [Header("Audio")]
+    [SerializeField] private SoloAudioAgent idleAudio;
+    [SerializeField] private SoloAudioAgent driveAudio;
+    [SerializeField] public float driveAudioSmoothTime = 0.3f;
+    private float driveAudioVelocity = 0.0f;
+    private float driveAudioLerp = 0.0f;
+
+    private float idleMaxVolume = 0.0f;
+    private float driveMaxVolume = 0.0f;
+
     // Upgrades
     [HideInInspector] public float accelMult = 1.0f;
     [HideInInspector] public float accelMultMin = 0.8f;
@@ -168,6 +178,9 @@ public class Car : MonoBehaviour
 
         nosCharge = maxNosCharge;
 
+        idleMaxVolume = idleAudio.localVolume;
+        driveMaxVolume = driveAudio.localVolume;
+
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCar"), LayerMask.NameToLayer("PlayerCar"));
     }
     public void NotifyDestroyed(Tree _tree)
@@ -191,6 +204,15 @@ public class Car : MonoBehaviour
             return;
         }
 
+        // Driver audio
+        float enginePower = Mathf.Abs(verticalInput);
+
+        driveAudioLerp = Mathf.SmoothDamp(driveAudioLerp, enginePower, ref driveAudioVelocity, driveAudioSmoothTime);
+
+        driveAudio.localVolume = (driveAudioLerp) * idleMaxVolume;
+        idleAudio.localVolume = (1.0f - driveAudioLerp) * driveMaxVolume;
+
+        // Boost
         nosCharge += Time.deltaTime * nosRechargeRate * nosCooldownMult;
         nosCharge = Mathf.Clamp(nosCharge, 0.0f, maxNosCharge);
         if (nosCharge >= 1.0f && InputManager.Instance.IsBindDown("Boost"))
