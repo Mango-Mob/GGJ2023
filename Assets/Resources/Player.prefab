@@ -1422,6 +1422,10 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2750438179710187833, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: muzzleFlash
+      value: 
+      objectReference: {fileID: 7975376880513894483}
+    - target: {fileID: 2750438179710187833, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 4018629104645254498}
@@ -1444,6 +1448,38 @@ PrefabInstance:
     - target: {fileID: 2750438180655874721, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_WheelDampingRate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3260894017769413307, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261075185858999911, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261091837030406151, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261694007700149089, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426720645254112243, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 7.8092465
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426720645254112243, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7.8092465
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426720645254112243, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7.8092465
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426720645254112243, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 3609900581236274712, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_Parameters.numCornerVertices
@@ -1587,6 +1623,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2750438180868529756, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
   m_PrefabInstance: {fileID: 4894821735747558194}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &7975376880513894483 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3261694007700149089, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+  m_PrefabInstance: {fileID: 4894821735747558194}
+  m_PrefabAsset: {fileID: 0}
 --- !u!65 &4914793325308653883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1621,5 +1662,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 046546b105b5c9943b0e9227c22568b5, type: 3}
   - {fileID: 8300000, guid: eefbf16f400fb0942870ffd8e6af9bac, type: 3}
   - {fileID: 8300000, guid: 1fc343b2140a85743bb203e6ba6ef88b, type: 3}
+  - {fileID: 8300000, guid: d30dcd3a207928c419e4d0098b2c541a, type: 3}
+  - {fileID: 8300000, guid: a179d97f03dd162418b1119cdf9813d9, type: 3}
+  - {fileID: 8300000, guid: 3ecbbf96530f9f64a9f5bb379133349d, type: 3}
   audioPlayersCount: 5
   channel: 0
