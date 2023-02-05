@@ -1839,6 +1839,7 @@ MonoBehaviour:
   timer: {fileID: 4261851784528968298}
   reward: {fileID: 3932585285186273111}
   pause: {fileID: 1078402120099635896}
+  charges: {fileID: 0}
 --- !u!114 &934663300723311089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2043,7 +2044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5907104748135304180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2084,21 +2085,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7647059}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 22bcad38904d72d4a800f0027ff24d59, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: b56535da9b5e206428fa24ee0280d0fa, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5907104748247304652
@@ -2118,7 +2119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5907104748247304653
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2159,21 +2160,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7647059}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 22bcad38904d72d4a800f0027ff24d59, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: b56535da9b5e206428fa24ee0280d0fa, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5907104748449948083
@@ -2632,7 +2633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5907104748784721341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2673,21 +2674,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7647059}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 22bcad38904d72d4a800f0027ff24d59, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: b56535da9b5e206428fa24ee0280d0fa, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5907104748811305108
@@ -3846,6 +3847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3277824200752881623}
+  - component: {fileID: 9106434254685541968}
   m_Layer: 5
   m_Name: Charges
   m_TagString: Untagged
@@ -3875,6 +3877,21 @@ RectTransform:
   m_AnchoredPosition: {x: 436, y: -259.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9106434254685541968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8700997789180642448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698285c1c3becaf4995ebc387c78cfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charge1: {fileID: 5907104748247304650}
+  charge2: {fileID: 5907104748784721338}
+  charge3: {fileID: 5907104748135304181}
 --- !u!1 &9192231528899795524
 GameObject:
   m_ObjectHideFlags: 0
