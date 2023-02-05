@@ -645,13 +645,14 @@ MonoBehaviour:
   motorForce: 1200
   brakeForce: 800
   maxSteeringAngle: 45
-  nosMult: 25000
   jumpVelocity: 5
   waterJumpMult: 2
   airTiltForce: 100
   xRotLock: 30
   zRotLock: 30
   centerOfMass: {fileID: 817793569}
+  nosMult: 25000
+  nosRechargeRate: 0.3
   waterFloatVelocity: 1100
   waterFloatDepth: 0
   waterDamping: 2
@@ -2215,7 +2216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2395089976803131873
 Transform:
   m_ObjectHideFlags: 0
@@ -2348,7 +2349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4214484698677931625
 Transform:
   m_ObjectHideFlags: 0
@@ -3375,7 +3376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2261035588609520422, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: -0.2009235
+      value: 0.00000014969993
       objectReference: {fileID: 0}
     - target: {fileID: 2261035588609520422, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
       propertyPath: m_ConnectedAnchor.y
@@ -3411,7 +3412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897957880951882798, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: -0.09664621
+      value: 0.00000007200716
       objectReference: {fileID: 0}
     - target: {fileID: 2897957880951882798, guid: 9b283b97ce5216540ae5a6b560dfa4e8, type: 3}
       propertyPath: m_ConnectedAnchor.y

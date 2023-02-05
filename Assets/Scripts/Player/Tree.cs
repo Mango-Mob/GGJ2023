@@ -29,26 +29,37 @@ public class Tree : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.m_player.GetComponent<Car>().NotifyDestroyed(this);
     }
+    public void Uproot()
+    {
+        if (!rigidbody.isKinematic)
+            return;
+
+        GetComponentInChildren<MeshFilter>().mesh = onHitMesh;
+        branches.SetActive(false);
+        rigidbody.isKinematic = false;
+        GetComponent<MultiAudioAgent>().PlayRandom();
+        var particles = GetComponentsInChildren<ParticleSystem>();
+        foreach (var item in particles)
+        {
+            item.Play();
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
-            if (rigidbody.isKinematic)
-                collision.collider.GetComponentInParent<Car>().HaltWheels();
+            Car car = collision.collider.GetComponentInParent<Car>();
 
-            if (collision.relativeVelocity.magnitude > breakVelocity && rigidbody.isKinematic)
+            if (!car)
+                return;
+
+            if (rigidbody.isKinematic)
+                car.HaltWheels();
+
+            if (collision.relativeVelocity.magnitude * car.impactMult > breakVelocity && rigidbody.isKinematic)
             {
-                Debug.Log(collision.relativeVelocity.magnitude);
-                GetComponentInChildren<MeshFilter>().mesh = onHitMesh;
-                branches.SetActive(false);
-                rigidbody.isKinematic = false;
-                rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult, collision.contacts[0].point);
-                GetComponent<MultiAudioAgent>().PlayRandom();
-                var particles = GetComponentsInChildren<ParticleSystem>();
-                foreach (var item in particles)
-                {
-                    item.Play();
-                }
+                rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult * car.impactMult, collision.contacts[0].point);
+                Uproot();
             }
         }
     }
