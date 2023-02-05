@@ -32,6 +32,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float jumpVelocity = 5.0f;
     [SerializeField] private float waterJumpMult = 2.0f;
     [SerializeField] private float airTiltForce = 5.0f;
+    [SerializeField] private float startBoost = 5.0f;
 
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
@@ -341,7 +342,7 @@ public class Car : MonoBehaviour
                 currentTarget.GetComponent<Rigidbody>().AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * hookDifference.normalized);
                 rigidbody.AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * -hookDifference.normalized);
 
-                pullTimer += Time.deltaTime * impactMult;
+                pullTimer += Time.fixedDeltaTime * impactMult;
                 if (pullTimer >= pullTimeReq)
                 {
                     currentTarget.Uproot();
@@ -396,6 +397,11 @@ public class Car : MonoBehaviour
     private void HandleMotor()
     {
         float currentNosForce = isNOS ? nosMult : 1.0f;
+
+        if (rigidbody.velocity.magnitude < 1.0f)
+        {
+            rigidbody.AddForce(transform.forward * startBoost * Time.fixedDeltaTime * verticalInput, ForceMode.VelocityChange);
+        }
 
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce * accelMult;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce * accelMult;
