@@ -82,6 +82,7 @@ public class Tree : MonoBehaviour
             if (collision.relativeVelocity.magnitude * car.impactMult > breakVelocity && rigidbody.isKinematic)
             {
                 rigidbody.AddForceAtPosition(collision.relativeVelocity * impactMult * car.impactMult, collision.contacts[0].point);
+                car.ShakeCamera();
                 Uproot();
             }
         }
