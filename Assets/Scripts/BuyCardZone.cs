@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuyCardZone : MonoBehaviour
 {
@@ -18,17 +19,19 @@ public class BuyCardZone : MonoBehaviour
     }
     public void Update()
     {
-        renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
-        canvas.enabled = Vector3.Distance(transform.position, GameManager.Instance.m_player.transform.position) < 30;
+        renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought) && GameManager.Instance.time_scale != 0;
+        canvas.enabled = Vector3.Distance(transform.position, GameManager.Instance.m_player.transform.position) < 20;
         if (canvas.enabled)
         {
-            canvas.enabled = true;
             if(GameManager.cash >= (int)priceScale.Evaluate(total_bought))
             {
-                canvas.GetComponentInChildren<TMP_Text>().SetText("BUY");
+                canvas.GetComponentInChildren<Image>().SetEnabled(true);
+                canvas.GetComponentInChildren<TMP_Text>().SetEnabled(false);
             }
             else
             {
+                canvas.GetComponentInChildren<Image>().SetEnabled(false);
+                canvas.GetComponentInChildren<TMP_Text>().SetEnabled(true);
                 canvas.GetComponentInChildren<TMP_Text>().SetText($"${(int)priceScale.Evaluate(total_bought)}");
             }
         }
