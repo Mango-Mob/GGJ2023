@@ -40,13 +40,17 @@ public class BuyCardZone : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (GameManager.Instance.time_scale == 0 && GameManager.cash < (int)priceScale.Evaluate(total_bought))
+        if (GameManager.Instance.time_scale == 0)
             return;
 
         if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
             other.GetComponent<Car>().HaltWheels();
-            GameManager.Instance.Buy(priceScale.Evaluate(total_bought++));
+            if (GameManager.cash >= (int)priceScale.Evaluate(total_bought))
+            {
+                GetComponent<SoloAudioAgent>().Play();
+                GameManager.Instance.Buy(priceScale.Evaluate(total_bought++));
+            }
         }
     }
 }
