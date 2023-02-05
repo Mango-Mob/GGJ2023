@@ -33,6 +33,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float waterJumpMult = 2.0f;
     [SerializeField] private float airTiltForce = 5.0f;
     [SerializeField] private float startBoost = 5.0f;
+    [SerializeField] private float speedometerScale = 5.0f;
 
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
@@ -80,6 +81,7 @@ public class Car : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private VisualEffect tailSmoke;
     [SerializeField] private WorldToCanvas targetUI;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Audio")]
     [SerializeField] private SoloAudioAgent idleAudio;
@@ -208,7 +210,6 @@ public class Car : MonoBehaviour
 
         // Driver audio
         float enginePower = Mathf.Abs(verticalInput);
-        Debug.Log(enginePower);
         driveAudioLerp = Mathf.SmoothDamp(driveAudioLerp, enginePower, ref driveAudioVelocity, driveAudioSmoothTime);
 
         driveAudio.localVolume = Mathf.Clamp01((driveAudioLerp) * idleMaxVolume);
@@ -222,10 +223,19 @@ public class Car : MonoBehaviour
         nosCharge = Mathf.Clamp(nosCharge, 0.0f, maxNosCharge);
         if (nosCharge >= 1.0f && InputManager.Instance.IsBindDown("Boost"))
         {
+            audioAgent.Play("Van Boost 1");
             rigidbody.AddForce(transform.forward * nosMult, ForceMode.Impulse);
             nosCharge -= 1.0f;
         }
+
+        // Beep beep
+        if (InputManager.Instance.IsBindDown("Jump"))
+        {
+            audioAgent.Play("Van Horn");
+        }
+
         PlayerHUD.Instance.charges.UpdateValue(nosCharge);
+        PlayerHUD.Instance.speed.value = (rigidbody.velocity.magnitude / 100.0f);
 
 
         ropeRenderer.enabled = hooked;
@@ -284,7 +294,8 @@ public class Car : MonoBehaviour
             }
             else
             {
-                StopHarpoon();
+                if (currentTarget)
+                    StopHarpoon();
             }
         }
 
@@ -309,6 +320,8 @@ public class Car : MonoBehaviour
     {
         if (currentTarget != null)
         {
+            muzzleFlash.Play();
+
             hooked = true;
             harpoonStartPos = harpoon.transform.position;
             harpoonStartRot = harpoon.transform.eulerAngles;
@@ -449,12 +462,15 @@ public class Car : MonoBehaviour
         backRightWheelCollider.brakeTorque = currentBreakForce;
         
     }
+
     private void HandleJumping()
     {
         bool isGrounded = frontLeftWheelCollider.isGrounded || frontRightWheelCollider.isGrounded || backLeftWheelCollider.isGrounded || backRightWheelCollider.isGrounded;
 
         if (isJumping && (isGrounded || isSwimming))
         {
+            audioAgent.PlayOnce("Van Jump");
+
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
             rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity * (isSwimming ? waterJumpMult : 1.0f) * jumpMult;
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);

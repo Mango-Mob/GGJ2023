@@ -112,7 +112,7 @@ public class MultiAudioAgent : AudioAgent
             AudioPlayer player = GetAvailablePlayer();
             if (player != null)
             {
-                //if(!IsAudioPlaying(clipName))
+                if(!IsAudioPlaying(clipName))
                 {
                     player.SetClip(clip);
                     player.SetLooping(isLooping);
@@ -120,7 +120,7 @@ public class MultiAudioAgent : AudioAgent
                     player.Play();
                     return true;
                 }
-                //return false;
+                return false;
             }
             Debug.LogWarning($"MultiAudioAgent on gameObject: \"{gameObject.name}\" doesn't have enough players to play: \"{clipName}\".");
             return false;
