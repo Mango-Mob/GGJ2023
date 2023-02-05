@@ -27,7 +27,13 @@ public class ScoreDisplay : MonoBehaviour
         else if(is_cash)
             render.SetText($"${value}");
         else
+        {
             render.SetText(ToTimeString(value));
+            if (value <= 30)
+                render.color = Color.red;
+            else
+                render.color = Color.white;
+        }
     }
 
     public static string ToTimeString(float value)
