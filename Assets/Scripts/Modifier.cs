@@ -22,34 +22,34 @@ public class Modifier : ScriptableObject
         {
             case Stat.Modifies.Accel:
                 if (stat.value > 0)
-                    return $"Your Acceleration is increased by {stat.value}%";
+                    return $"Your Acceleration is increased by {(int)(stat.value * 100)}%";
                 else
-                    return $"Your Acceleration is decreased by {-stat.value}%";
+                    return $"Your Acceleration is decreased by {-(int)(stat.value * 100)}%";
             case Stat.Modifies.CoolDown:
                 if (stat.value > 0)
-                    return $"Your Boost recharges {stat.value}% faster";
+                    return $"Your Boost recharges {(int)(stat.value * 100)}% faster";
                 else
-                    return $"Your Boost recharges {-stat.value}% slower";
+                    return $"Your Boost recharges {-(int)(stat.value * 100)}% slower";
             case Stat.Modifies.Impact:
                 if (stat.value > 0)
-                    return $"Your Impact is increased by {stat.value}";
+                    return $"Your Strength is increased by {(int)(stat.value * 100)}%";
                 else
-                    return $"Your Impact is decreased by {-stat.value}";
+                    return $"Your Strength is decreased by {-(int)(stat.value * 100)}%";
             case Stat.Modifies.Steering:
                 if (stat.value > 0)
-                    return $"Your Steering is increased by {stat.value}";
+                    return $"Your Steering is increased by {(int)(stat.value * 100)}%";
                 else
-                    return $"Your Steering is decreased by {-stat.value}";
+                    return $"Your Steering is decreased by {-(int)(stat.value * 100)}%";
             case Stat.Modifies.Jump:
                 if (stat.value > 0)
-                    return $"Your Jump Force is increased by {stat.value}";
+                    return $"Your Jump Force is increased by {(int)(stat.value * 100)}%";
                 else
-                    return $"Van Jump Force is decreased by {-stat.value}";
+                    return $"Van Jump Force is decreased by {-(int)(stat.value * 100)}%";
             case Stat.Modifies.Swim_Speed:
                 if (stat.value > 0)
-                    return $"Van Swim Speed is increased by {stat.value}";
+                    return $"Van Swim Speed is increased by {(int)(stat.value * 100)}%";
                 else
-                    return $"Van Swim Speed is decreased by {-stat.value}";
+                    return $"Van Swim Speed is decreased by {-(int)(stat.value * 100)}%";
             default:
                 return "NULL";
         }
