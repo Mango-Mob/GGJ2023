@@ -33,6 +33,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float waterJumpMult = 2.0f;
     [SerializeField] private float airTiltForce = 5.0f;
     [SerializeField] private float startBoost = 5.0f;
+    [SerializeField] private float speedometerScale = 5.0f;
 
     [SerializeField] private float xRotLock = 30.0f;
     [SerializeField] private float zRotLock = 30.0f;
@@ -80,10 +81,12 @@ public class Car : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private VisualEffect tailSmoke;
     [SerializeField] private WorldToCanvas targetUI;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Audio")]
     [SerializeField] private SoloAudioAgent idleAudio;
     [SerializeField] private SoloAudioAgent driveAudio;
+    private MultiAudioAgent audioAgent;
     [SerializeField] public float driveAudioSmoothTime = 0.3f;
     private float driveAudioVelocity = 0.0f;
     private float driveAudioLerp = 0.0f;
@@ -170,6 +173,7 @@ public class Car : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         mainCollider = GetComponent<BoxCollider>();
+        audioAgent = GetComponent<MultiAudioAgent>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
         harpoonOrigin = harpoon.transform.localPosition;
@@ -206,21 +210,32 @@ public class Car : MonoBehaviour
 
         // Driver audio
         float enginePower = Mathf.Abs(verticalInput);
-
         driveAudioLerp = Mathf.SmoothDamp(driveAudioLerp, enginePower, ref driveAudioVelocity, driveAudioSmoothTime);
 
-        driveAudio.localVolume = (driveAudioLerp) * idleMaxVolume;
-        idleAudio.localVolume = (1.0f - driveAudioLerp) * driveMaxVolume;
+        driveAudio.localVolume = Mathf.Clamp01((driveAudioLerp) * idleMaxVolume);
+        driveAudio.isMuted = driveAudioLerp < 0.01f;
+
+        idleAudio.localVolume = Mathf.Clamp01((1.0f - driveAudioLerp * 0.5f) * driveMaxVolume);
+        idleAudio.isMuted = driveAudioLerp > 0.99f;
 
         // Boost
         nosCharge += Time.deltaTime * nosRechargeRate * nosCooldownMult;
         nosCharge = Mathf.Clamp(nosCharge, 0.0f, maxNosCharge);
         if (nosCharge >= 1.0f && InputManager.Instance.IsBindDown("Boost"))
         {
+            audioAgent.Play("Van Boost 1");
             rigidbody.AddForce(transform.forward * nosMult, ForceMode.Impulse);
             nosCharge -= 1.0f;
         }
+
+        // Beep beep
+        if (InputManager.Instance.IsBindDown("Jump"))
+        {
+            audioAgent.Play("Van Horn");
+        }
+
         PlayerHUD.Instance.charges.UpdateValue(nosCharge);
+        PlayerHUD.Instance.speed.value = (rigidbody.velocity.magnitude / 100.0f);
 
 
         ropeRenderer.enabled = hooked;
@@ -275,15 +290,12 @@ public class Car : MonoBehaviour
         {
             if (!hooked && currentTarget)
             {
-                hooked = true;
-                harpoonStartPos = harpoon.transform.position;
-                harpoonStartRot = harpoon.transform.eulerAngles;
-
                 StartCoroutine(FireHarpoon());
             }
             else
             {
-                StopHarpoon();
+                if (currentTarget)
+                    StopHarpoon();
             }
         }
 
@@ -301,11 +313,21 @@ public class Car : MonoBehaviour
         harpoon.transform.localPosition = harpoonOrigin;
         harpoon.transform.localRotation = Quaternion.identity;
         hooked = false;
+
+        audioAgent.Play("Harpoon Reload");
     }
     IEnumerator FireHarpoon()
     {
         if (currentTarget != null)
         {
+            muzzleFlash.Play();
+
+            hooked = true;
+            harpoonStartPos = harpoon.transform.position;
+            harpoonStartRot = harpoon.transform.eulerAngles;
+
+            audioAgent.Play("Harpoon Shoot");
+
             isHarpoonTravelling = true;
             float travelLerp = 0.0f;
             float distance = Vector3.Distance(harpoonStartPos, currentTarget.centreOfMass.position);
@@ -317,8 +339,10 @@ public class Car : MonoBehaviour
 
                 yield return new WaitForEndOfFrame();
             }
+
+            isHarpoonTravelling = false;
+            audioAgent.Play("Harpoon Hit");
         }
-        isHarpoonTravelling = false;
     }
 
     private void OnDrawGizmos()
@@ -438,12 +462,15 @@ public class Car : MonoBehaviour
         backRightWheelCollider.brakeTorque = currentBreakForce;
         
     }
+
     private void HandleJumping()
     {
         bool isGrounded = frontLeftWheelCollider.isGrounded || frontRightWheelCollider.isGrounded || backLeftWheelCollider.isGrounded || backRightWheelCollider.isGrounded;
 
         if (isJumping && (isGrounded || isSwimming))
         {
+            audioAgent.PlayOnce("Van Jump");
+
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
             rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity * (isSwimming ? waterJumpMult : 1.0f) * jumpMult;
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);

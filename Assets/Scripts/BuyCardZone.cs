@@ -19,6 +19,8 @@ public class BuyCardZone : MonoBehaviour
     }
     public void Update()
     {
+        if (!GameManager.HasInstance())
+            return;
         renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
         canvas.enabled = Vector3.Distance(transform.position, GameManager.Instance.m_player.transform.position) < 20 && GameManager.Instance.time_scale != 0;
         if (canvas.enabled)
@@ -36,13 +38,17 @@ public class BuyCardZone : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+        if (GameManager.Instance.time_scale == 0)
+            return;
+
         if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
             other.GetComponent<Car>().HaltWheels();
             if (GameManager.cash >= (int)priceScale.Evaluate(total_bought))
             {
+                GetComponent<SoloAudioAgent>().Play();
                 GameManager.Instance.Buy(priceScale.Evaluate(total_bought++));
             }
         }

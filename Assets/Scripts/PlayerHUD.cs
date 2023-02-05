@@ -12,6 +12,7 @@ public class PlayerHUD : Singleton<PlayerHUD>
     public PauseDisplay pause;
 
     public BoostChargeDisplay charges;
+    public SpeedDisplay speed;
 
     // Start is called before the first frame update
     protected override void Awake()
