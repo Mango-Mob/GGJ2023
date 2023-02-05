@@ -8,10 +8,15 @@ public class Tree : MonoBehaviour
     public GameObject branches;
     public Mesh onHitMesh;
 
+    public ParticleSystem treePoof;
+    public ParticleSystem trunkPoof;
+
     private Rigidbody rigidbody;
     [SerializeField] private float breakVelocity = 5.0f;
     [SerializeField] private float impactMult = 2000.0f;
 
+    private float delay = 0.0f;
+    private bool is_detatching = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,13 +27,31 @@ public class Tree : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (delay > 0)
+            delay -= Time.deltaTime;
+        else if (is_detatching)
+            DetachVFX( 0 );
     }
     private void OnDestroy()
     {
         if (GameManager.Instance != null)
             GameManager.Instance.m_player.GetComponent<Car>().NotifyDestroyed(this);
+        
     }
+
+    public void DetachVFX(float _delay)
+    {
+        if(!is_detatching)
+        {
+            is_detatching = true;
+            delay = _delay;
+            return;
+        }
+        trunkPoof.gameObject.SetActive(true);
+        trunkPoof.Play();
+        trunkPoof.transform.SetParent(null);
+    }
+
     public void Uproot()
     {
         if (!rigidbody.isKinematic)
@@ -38,7 +61,7 @@ public class Tree : MonoBehaviour
         branches.SetActive(false);
         rigidbody.isKinematic = false;
         GetComponent<MultiAudioAgent>().PlayRandom();
-        var particles = GetComponentsInChildren<ParticleSystem>();
+        var particles = treePoof.GetComponentsInChildren<ParticleSystem>();
         foreach (var item in particles)
         {
             item.Play();
