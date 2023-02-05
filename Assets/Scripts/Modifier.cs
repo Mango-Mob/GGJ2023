@@ -22,14 +22,14 @@ public class Modifier : ScriptableObject
         {
             case Stat.Modifies.Accel:
                 if (stat.value > 0)
-                    return $"Your Acceleration is increased by {stat.value}";
+                    return $"Your Acceleration is increased by {stat.value}%";
                 else
-                    return $"Your Acceleration is decreased by {-stat.value}";
+                    return $"Your Acceleration is decreased by {-stat.value}%";
             case Stat.Modifies.CoolDown:
                 if (stat.value > 0)
-                    return $"Your Boost Cooldown is decreased by {stat.value}s";
+                    return $"Your Boost recharges {stat.value}% faster";
                 else
-                    return $"Your Boost Cooldown is increased by {-stat.value}s";
+                    return $"Your Boost recharges {-stat.value}% slower";
             case Stat.Modifies.Impact:
                 if (stat.value > 0)
                     return $"Your Impact is increased by {stat.value}";

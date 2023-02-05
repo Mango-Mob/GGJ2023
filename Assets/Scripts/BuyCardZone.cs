@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BuyCardZone : MonoBehaviour
@@ -18,7 +19,19 @@ public class BuyCardZone : MonoBehaviour
     public void Update()
     {
         renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
-        canvas.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
+
+        if(Vector3.Distance(transform.position, GameManager.Instance.m_player.transform.position) < 30)
+        {
+            canvas.enabled = true;
+            if(GameManager.cash >= (int)priceScale.Evaluate(total_bought))
+            {
+                canvas.GetComponentInChildren<TMP_Text>().SetText("BUY");
+            }
+            else
+            {
+                canvas.GetComponentInChildren<TMP_Text>().SetText($"${(int)priceScale.Evaluate(total_bought)}");
+            }
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

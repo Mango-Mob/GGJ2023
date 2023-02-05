@@ -15,15 +15,15 @@ public class MenuDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.UP, 0))
+        if (InputManager.Instance.IsGamepadButtonDown(ButtonType.UP, 0))
         {
             Play();
         }
-        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.LEFT, 0))
+        else if (InputManager.Instance.IsGamepadButtonDown(ButtonType.LEFT, 0))
         {
             Settings();
         }
-        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.DOWN, 0))
+        else if (InputManager.Instance.IsGamepadButtonDown(ButtonType.DOWN, 0))
         {
             Quit();
         }
