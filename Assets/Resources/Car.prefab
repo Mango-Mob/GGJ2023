@@ -644,20 +644,23 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   motorForce: 1200
   brakeForce: 800
-  maxSteeringAngle: 45
+  maxSteeringAngle: 30
   jumpVelocity: 5
   waterJumpMult: 2
   airTiltForce: 100
+  startBoost: 5
   xRotLock: 30
   zRotLock: 30
   centerOfMass: {fileID: 817793569}
   nosMult: 25000
-  nosRechargeRate: 0.3
+  nosRechargeRate: 0.08
+  pullTimeReq: 1.5
   waterFloatVelocity: 1100
   waterFloatDepth: 0
   waterDamping: 2
   swimAcceleration: 20
   swimTorqueMult: 1
+  floatsAnimator: {fileID: 1614416389815003187}
   frontLeftWheelCollider: {fileID: 2750438180655874721}
   frontRightWheelCollider: {fileID: 2750438180545189330}
   backLeftWheelCollider: {fileID: 2750438180622035628}
@@ -678,6 +681,18 @@ MonoBehaviour:
   ropeRenderer: {fileID: 3609900581236274712}
   tailSmoke: {fileID: 1971243556610725699}
   targetUI: {fileID: 0}
+  accelMult: 1
+  accelMultMin: 0.8
+  nosCooldownMult: 1
+  nosCooldownMultMin: 0.8
+  impactMult: 1
+  impactMultMin: 0.8
+  steeringAngleMult: 1
+  steeringAngleMultMin: 0.8
+  jumpMult: 1
+  jumpMultMin: 0.8
+  swimSpeedMult: 1
+  swimSpeedMultMin: 0.8
 --- !u!65 &6470494991929503720
 BoxCollider:
   m_ObjectHideFlags: 0

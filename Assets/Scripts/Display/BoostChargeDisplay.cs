@@ -11,8 +11,8 @@ public class BoostChargeDisplay : MonoBehaviour
 
     public void UpdateValue(float _value)
     {
-        charge1.fillAmount = _value; 
-        charge2.fillAmount = _value - 1.0f; 
-        charge3.fillAmount = _value - 2.0f; 
+        charge1.fillAmount = 1.0f - (_value);
+        charge2.fillAmount = 1.0f - (_value - 1.0f); 
+        charge3.fillAmount = 1.0f - (_value - 2.0f); 
     }
 }
