@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treePrefab:
   - {fileID: 1015509493878918148, guid: 04c39f4a8068476488bb79a795a955f2, type: 3}
+  - {fileID: 3559708982004794908, guid: d5badb973ae6fc644a9a0000658693fa, type: 3}
   stonePrefab:
   - {fileID: 3989079598489164706, guid: 51d2ef9dbf43c25468b51850ecb152c0, type: 3}
   grassPrefab:

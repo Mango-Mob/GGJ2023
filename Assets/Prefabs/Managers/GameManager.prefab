@@ -222,6 +222,6 @@ MonoBehaviour:
   m_player: {fileID: 0}
   m_activeCamera: {fileID: 0}
   IsInCombat: 0
-  timer: 40
+  timer: 180
   time_scale: 1
   reward: {fileID: 0}
