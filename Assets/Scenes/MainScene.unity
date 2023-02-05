@@ -1535,10 +1535,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6337386696843158201, guid: 267d881da16af0242991c7a66b117a71, type: 3}
-      propertyPath: timer
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 6337386696843158201, guid: 267d881da16af0242991c7a66b117a71, type: 3}
       propertyPath: reward
       value: 
       objectReference: {fileID: 800988222}

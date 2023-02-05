@@ -1953,6 +1953,7 @@ MonoBehaviour:
   minAngle: 0
   maxAngle: -270
   value: 0
+  lerp: 0.25
 --- !u!1 &5907104748088749111
 GameObject:
   m_ObjectHideFlags: 0
