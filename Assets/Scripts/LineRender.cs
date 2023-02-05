@@ -15,17 +15,17 @@ public class LineRender : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        line.positionCount = 6;
+        line.positionCount = 2;
     }
 
     // Update is called once per frame
     void Update()
     {
         line.SetPosition(0, transform.position);
-        line.SetPosition(1, pos1.position);
-        line.SetPosition(2, pos2.position);
-        line.SetPosition(3, pos3.position);
-        line.SetPosition(4, pos4.position);
-        line.SetPosition(5, endPos.position);
+        //line.SetPosition(1, pos1.position);
+        //line.SetPosition(2, pos2.position);
+        //line.SetPosition(3, pos3.position);
+        //line.SetPosition(4, pos4.position);
+        line.SetPosition(1, endPos.position);
     }
 }
