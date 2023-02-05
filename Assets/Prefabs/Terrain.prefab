@@ -49,17 +49,19 @@ MonoBehaviour:
   - {fileID: 1015509493878918148, guid: 04c39f4a8068476488bb79a795a955f2, type: 3}
   - {fileID: 3559708982004794908, guid: d5badb973ae6fc644a9a0000658693fa, type: 3}
   stonePrefab:
-  - {fileID: 3989079598489164706, guid: 51d2ef9dbf43c25468b51850ecb152c0, type: 3}
+  - {fileID: 3626167962293471539, guid: 0654f57d0be45f3418db7b0e9872585e, type: 3}
+  - {fileID: 5180800491101455, guid: e60a2e9248b4b8848a43e29bd2135fa8, type: 3}
+  - {fileID: 8981476241575916650, guid: a9c0a11d3cc8815439d1cad5e1e5c6ff, type: 3}
   grassPrefab:
   - {fileID: 4387785167557321355, guid: b84ec5977c1930c43b73f1a394973132, type: 3}
   windPrefab:
   - {fileID: 6208709444786823620, guid: 7576980c769a4eb47b80c790553bda3b, type: 3}
   - {fileID: 6208709444786823620, guid: b77e834bc64d4f54d9b1e077cc1086fd, type: 3}
   playerPlatform: {fileID: 2378456320657186143, guid: 6375f6492813cfd43b8f43290228c604, type: 3}
-  TreeCount: 30
-  GrassCount: 200
-  StoneCount: 15
-  WindCount: 10
+  TreeCount: 50
+  GrassCount: 500
+  StoneCount: 30
+  WindCount: 25
   windMinTime: 4
   windMaxTime: 5
   windAdditionalHeightMin: 3
