@@ -148,6 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4352599978292504044}
   - component: {fileID: 234611579460810594}
+  - component: {fileID: 8342134228615477076}
   m_Layer: 0
   m_Name: MoneyProjectile
   m_TagString: Untagged
@@ -189,6 +190,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8342134228615477076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975651742289182550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7ab553b9852f54e9e52cf83835e0d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localVolume: 1
+  isMuted: 0
+  is3D: 0
+  min3D_Dist: 1
+  max3D_Dist: 500
+  mainClip: {fileID: 8300000, guid: dfeebe4df5e901b42ae91d3ef7741a18, type: 3}
+  channel: 1
+  isPlayOnAwake: 1
+  isLooping: 0
 --- !u!1 &8849055321149993227
 GameObject:
   m_ObjectHideFlags: 0
