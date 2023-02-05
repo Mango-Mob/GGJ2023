@@ -197,6 +197,7 @@ public class Car : MonoBehaviour
             rigidbody.AddForce(transform.forward * nosMult, ForceMode.Impulse);
             nosCharge -= 1.0f;
         }
+        PlayerHUD.Instance.charges.UpdateValue(nosCharge);
 
 
         ropeRenderer.enabled = hooked;
