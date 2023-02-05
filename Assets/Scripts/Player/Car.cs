@@ -43,6 +43,10 @@ public class Car : MonoBehaviour
     private float nosCharge = 3.0f;
     private float maxNosCharge = 3.0f;
 
+    [Header("Pulling")]
+    [SerializeField] private float pullTimeReq = 1.5f;
+    private float pullTimer = 0.0f;
+
     [Header("Swimming")]
     [SerializeField] private float waterFloatVelocity = 2.5f;
     [SerializeField] private float waterFloatDepth = 0.5f;
@@ -304,6 +308,16 @@ public class Car : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (GameManager.Instance.time_scale == 0)
+        {
+            verticalInput = 0.0f;
+            horizontalInput = 0.0f;
+            tiltInput = Vector2.zero;
+
+            //We are paused!
+            return;
+        }
+
         GetInput();
         HandleMotor();
         HandleSteering();
@@ -326,7 +340,22 @@ public class Car : MonoBehaviour
             {
                 currentTarget.GetComponent<Rigidbody>().AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * hookDifference.normalized);
                 rigidbody.AddForce((hookDifference.magnitude - harpoonRange) * harpoonSpring * -hookDifference.normalized);
+
+                pullTimer += Time.deltaTime * impactMult;
+                if (pullTimer >= pullTimeReq)
+                {
+                    currentTarget.Uproot();
+                    pullTimer = 0.0f;
+                }
             }
+            else
+            {
+                pullTimer = 0.0f;
+            }
+        }
+        else
+        {
+            pullTimer = 0.0f;
         }
     }
     private void GetInput()
