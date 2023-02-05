@@ -24,6 +24,8 @@ public class LumberCollection : MonoBehaviour
         else if (other.gameObject.layer == LayerMask.NameToLayer("PlayerCar"))
         {
             Tree tree = other.GetComponent<Car>().GetHookedTree();
+            if (!tree)
+                return;
             Prop prop = tree.GetComponent<Prop>();
             if (prop)
             {

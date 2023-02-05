@@ -38,7 +38,7 @@ public class AudioPlayer
 
     #region AudioControls
 
-    public void Play() { /*source.Play()*/source.PlayOneShot(source.clip); }
+    public void Play() { source.Play(); }
     public void Pause() { source.Pause(); }
     public void Stop() { source.Stop(); }
     public bool IsPlaying() { return source.isPlaying || isDelayed; }
