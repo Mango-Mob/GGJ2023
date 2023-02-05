@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
     public void Update()
     {
         timer -= Time.deltaTime * time_scale;
-
+        elapsed_time += Time.deltaTime;
         Cursor.lockState = (Cursor.visible) ? CursorLockMode.None: CursorLockMode.Locked;
         Cursor.visible = time_scale == 0f;
 
