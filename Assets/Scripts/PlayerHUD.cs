@@ -27,7 +27,7 @@ public class PlayerHUD : MonoBehaviour
             timer.value = GameManager.Instance.timer;
         }
 
-        if ((InputManager.Instance.IsGamepadButtonPressed(ButtonType.START, 0) || InputManager.Instance.IsKeyDown(KeyType.ESC)) && !reward.isActiveAndEnabled)
+        if ((InputManager.Instance.IsGamepadButtonDown(ButtonType.START, 0) || InputManager.Instance.IsKeyDown(KeyType.ESC)) && !reward.isActiveAndEnabled)
         {
             pause.gameObject.SetActive(!pause.isActiveAndEnabled);
         }
