@@ -298,8 +298,8 @@ MonoBehaviour:
 
     Accelerate forwards = W
 
-    Accelerate
-    backwards = S
+    Reverse =
+    S
 
     Brakes - CTRL
 
@@ -307,8 +307,8 @@ MonoBehaviour:
 
     Boost - L SHIFT
 
-    Shoot
-    harpoon - Left Click'
+    Shoot harpoon
+    - Left Click'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ae14c691c7b2614e80f1c76de08b435, type: 2}
   m_sharedMaterial: {fileID: -1952079153350218397, guid: 8ae14c691c7b2614e80f1c76de08b435, type: 2}
@@ -1919,6 +1919,7 @@ GameObject:
   - component: {fileID: 7480936863719637714}
   - component: {fileID: 7480936863719637712}
   - component: {fileID: 7480936863719637713}
+  - component: {fileID: 8613051074663774972}
   m_Layer: 5
   m_Name: Controls
   m_TagString: Untagged
@@ -1987,6 +1988,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8613051074663774972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7480936863719637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2dac2f81cf4fd46af5d5cb7359e7bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyboard: {fileID: 4572726592817669890}
+  controller: {fileID: 7480936864069263978}
 --- !u!1 &7480936863888647255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2453,9 +2468,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Controller:\r\nSteer - Left stick\r\nAccelerate forwards = Right trigger\r\nAccelerate
-    backwards = Left trigger\r\nBrakes - B\r\nJump - A\r\nBoost - Y\r\nShoot harpoon
-    - RB\r\n\r"
+  m_text: "Controller:\r\nSteer - Left stick\r\nAccelerate = Right trigger\r\nReverse
+    = Left trigger\r\nBrakes - B\r\nJump - A\r\nBoost - Y\r\nShoot harpoon - RB\r\n\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8ae14c691c7b2614e80f1c76de08b435, type: 2}
   m_sharedMaterial: {fileID: -1952079153350218397, guid: 8ae14c691c7b2614e80f1c76de08b435, type: 2}
