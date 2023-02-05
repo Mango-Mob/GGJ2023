@@ -83,7 +83,7 @@ MonoBehaviour:
   centreOfMass: {fileID: 9207945738985945864}
   branches: {fileID: 4365745833424892786}
   onHitMesh: {fileID: 6848928758038697473, guid: db884b77e88758d4f82ff78b5ec8cdd7, type: 3}
-  breakVelocity: 5
+  breakVelocity: 10
   impactMult: 2000
 --- !u!95 &4329205399143133641
 Animator:
