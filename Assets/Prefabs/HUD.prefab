@@ -1839,7 +1839,7 @@ MonoBehaviour:
   timer: {fileID: 4261851784528968298}
   reward: {fileID: 3932585285186273111}
   pause: {fileID: 1078402120099635896}
-  charges: {fileID: 0}
+  charges: {fileID: 9106434254685541968}
 --- !u!114 &934663300723311089
 MonoBehaviour:
   m_ObjectHideFlags: 0
