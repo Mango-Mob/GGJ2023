@@ -1469,6 +1469,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4452230867656208809, guid: da45e9d13abd37f44907f3c43db6718f, type: 3}
+      propertyPath: stonePrefab.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452230867656208809, guid: da45e9d13abd37f44907f3c43db6718f, type: 3}
+      propertyPath: stonePrefab.Array.data[0]
+      value: 
+      objectReference: {fileID: 3626167962293471539, guid: 0654f57d0be45f3418db7b0e9872585e, type: 3}
     - target: {fileID: 4452230867656208810, guid: da45e9d13abd37f44907f3c43db6718f, type: 3}
       propertyPath: m_Name
       value: Terrain

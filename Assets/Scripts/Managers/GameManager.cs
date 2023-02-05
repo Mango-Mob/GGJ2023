@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
@@ -51,6 +52,8 @@ public class GameManager : Singleton<GameManager>
 
         Cursor.lockState = (Cursor.visible) ? CursorLockMode.None: CursorLockMode.Locked;
         Cursor.visible = time_scale == 0f;
+
+        GetComponentInChildren<Image>().color = new Color(0, 0, 0, (time_scale == 0) ? 0 : 1.0f - timer/8.0f);
         if(timer <= 0)
         {
             SceneManager.LoadScene("EndScene");
