@@ -17,17 +17,17 @@ public class RewardDisplay : MonoBehaviour
     }
     public void Update()
     {
-        if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.LEFT, 0))
+        if (InputManager.Instance.IsGamepadButtonDown(ButtonType.LEFT, 0))
         {
             option1.GiveReward();
             gameObject.SetActive(false);
         }
-        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.UP, 0))
+        else if (InputManager.Instance.IsGamepadButtonDown(ButtonType.UP, 0))
         {
             option2.GiveReward();
             gameObject.SetActive(false);
         }
-        else if (InputManager.Instance.IsGamepadButtonPressed(ButtonType.RIGHT, 0))
+        else if (InputManager.Instance.IsGamepadButtonDown(ButtonType.RIGHT, 0))
         {
             option3.GiveReward();
             gameObject.SetActive(false);
