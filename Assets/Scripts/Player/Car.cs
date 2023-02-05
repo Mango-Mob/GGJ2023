@@ -206,11 +206,14 @@ public class Car : MonoBehaviour
 
         // Driver audio
         float enginePower = Mathf.Abs(verticalInput);
-
+        Debug.Log(enginePower);
         driveAudioLerp = Mathf.SmoothDamp(driveAudioLerp, enginePower, ref driveAudioVelocity, driveAudioSmoothTime);
 
-        driveAudio.localVolume = (driveAudioLerp) * idleMaxVolume;
-        idleAudio.localVolume = (1.0f - driveAudioLerp) * driveMaxVolume;
+        driveAudio.localVolume = Mathf.Clamp01((driveAudioLerp) * idleMaxVolume);
+        driveAudio.isMuted = driveAudioLerp < 0.01f;
+
+        idleAudio.localVolume = Mathf.Clamp01((1.0f - driveAudioLerp * 0.5f) * driveMaxVolume);
+        idleAudio.isMuted = driveAudioLerp > 0.99f;
 
         // Boost
         nosCharge += Time.deltaTime * nosRechargeRate * nosCooldownMult;

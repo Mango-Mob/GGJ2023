@@ -60,7 +60,7 @@ public class Tree : MonoBehaviour
         GetComponentInChildren<MeshFilter>().mesh = onHitMesh;
         branches.SetActive(false);
         rigidbody.isKinematic = false;
-        GetComponent<MultiAudioAgent>().PlayRandom();
+        GetComponent<MultiAudioAgent>().PlayRandom( false );
         var particles = treePoof.GetComponentsInChildren<ParticleSystem>();
         foreach (var item in particles)
         {

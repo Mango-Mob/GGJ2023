@@ -19,6 +19,8 @@ public class BuyCardZone : MonoBehaviour
     }
     public void Update()
     {
+        if (!GameManager.HasInstance())
+            return;
         renderer.enabled = GameManager.cash >= (int)priceScale.Evaluate(total_bought);
         canvas.enabled = Vector3.Distance(transform.position, GameManager.Instance.m_player.transform.position) < 20 && GameManager.Instance.time_scale != 0;
         if (canvas.enabled)

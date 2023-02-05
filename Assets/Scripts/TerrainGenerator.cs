@@ -164,7 +164,7 @@ public class TerrainGenerator : MonoBehaviour
             factory.SpawnTree(treePrefab[UnityEngine.Random.Range(0, treePrefab.Length)], PlaceTree());
 
         for (int i = 0; i < StoneCount; i++)
-            factory.SpawnBigRock(stonePrefab[UnityEngine.Random.Range(0, treePrefab.Length)], PlaceTree());
+            factory.SpawnBigRock(stonePrefab[UnityEngine.Random.Range(0, stonePrefab.Length)], PlaceTree());
         
         for (int i = 0; i < WindCount; i++)
         {
@@ -182,7 +182,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             Vector3 loc;
             if(PlaceGrass(out loc))
-                factory.SpawnGrass(grassPrefab[UnityEngine.Random.Range(0, treePrefab.Length)], loc);
+                factory.SpawnGrass(grassPrefab[UnityEngine.Random.Range(0, grassPrefab.Length)], loc);
         }
             
     }
