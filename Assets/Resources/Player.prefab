@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024ecd21f977d0b4cbfd71ce0c41f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localVolume: 0.4
+  localVolume: 0.1
   isMuted: 0
   is3D: 0
   min3D_Dist: 1
@@ -1226,7 +1226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024ecd21f977d0b4cbfd71ce0c41f316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localVolume: 0.4
+  localVolume: 0.2
   isMuted: 0
   is3D: 0
   min3D_Dist: 1
@@ -1600,24 +1600,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.08, y: 0.888916, z: 1.3591466}
   m_Center: {x: 0, y: -0.055541992, z: 2.589573}
---- !u!114 &708385791174700129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7333657469540114953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 024ecd21f977d0b4cbfd71ce0c41f316, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localVolume: 1
-  isMuted: 0
-  is3D: 0
-  min3D_Dist: 1
-  max3D_Dist: 500
-  mainClip: {fileID: 8300000, guid: ef4044d8e07aa4742a4b9020e96987b0, type: 3}
-  channel: 1
-  isPlayOnAwake: 1
-  isLooping: 1
