@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3857479350978276504}
   - component: {fileID: 3632904532803043608}
   - component: {fileID: 2510933354140282814}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_main2_Tree_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,9 +95,9 @@ GameObject:
   - component: {fileID: 4960974000394560019}
   - component: {fileID: 8909449656326044262}
   - component: {fileID: 278269358449217919}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_2
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 7520779757052545940}
   - component: {fileID: 7520779757052545939}
   - component: {fileID: 7520779757052545938}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trunk Poof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5127,7 +5127,7 @@ GameObject:
   - component: {fileID: 6808421208122597288}
   - component: {fileID: 5220395478552611343}
   - component: {fileID: 4996334488802191333}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_main2_Tree_2_Branches
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5212,6 +5212,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree Poof
       objectReference: {fileID: 0}
+    - target: {fileID: 1433397391742460043, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1433397391742460046, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -5263,6 +5267,14 @@ PrefabInstance:
     - target: {fileID: 4680635609593520678, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6732417141938527393, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324979557523140199, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bd56908c1f8a3744b61b6521b75cc02, type: 3}

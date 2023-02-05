@@ -84,6 +84,7 @@ public class Car : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private SoloAudioAgent idleAudio;
     [SerializeField] private SoloAudioAgent driveAudio;
+    private MultiAudioAgent audioAgent;
     [SerializeField] public float driveAudioSmoothTime = 0.3f;
     private float driveAudioVelocity = 0.0f;
     private float driveAudioLerp = 0.0f;
@@ -170,6 +171,7 @@ public class Car : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         mainCollider = GetComponent<BoxCollider>();
+        audioAgent = GetComponent<MultiAudioAgent>();
         rigidbody.centerOfMass = centerOfMass.localPosition;
 
         harpoonOrigin = harpoon.transform.localPosition;
@@ -278,10 +280,6 @@ public class Car : MonoBehaviour
         {
             if (!hooked && currentTarget)
             {
-                hooked = true;
-                harpoonStartPos = harpoon.transform.position;
-                harpoonStartRot = harpoon.transform.eulerAngles;
-
                 StartCoroutine(FireHarpoon());
             }
             else
@@ -304,11 +302,19 @@ public class Car : MonoBehaviour
         harpoon.transform.localPosition = harpoonOrigin;
         harpoon.transform.localRotation = Quaternion.identity;
         hooked = false;
+
+        audioAgent.Play("Harpoon Reload");
     }
     IEnumerator FireHarpoon()
     {
         if (currentTarget != null)
         {
+            hooked = true;
+            harpoonStartPos = harpoon.transform.position;
+            harpoonStartRot = harpoon.transform.eulerAngles;
+
+            audioAgent.Play("Harpoon Shoot");
+
             isHarpoonTravelling = true;
             float travelLerp = 0.0f;
             float distance = Vector3.Distance(harpoonStartPos, currentTarget.centreOfMass.position);
@@ -320,8 +326,10 @@ public class Car : MonoBehaviour
 
                 yield return new WaitForEndOfFrame();
             }
+
+            isHarpoonTravelling = false;
+            audioAgent.Play("Harpoon Hit");
         }
-        isHarpoonTravelling = false;
     }
 
     private void OnDrawGizmos()
