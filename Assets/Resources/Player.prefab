@@ -949,7 +949,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7333657468929229193}
-  m_LocalRotation: {x: -0.037385356, y: -0.0000000021492945, z: -8.040834e-11, w: 0.99930096}
+  m_LocalRotation: {x: -0.037385356, y: 0.0000000021492936, z: 8.040831e-11, w: 0.99930096}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1132,11 +1132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3517831989323884725, guid: 7d82a578ccd5a924984f789a98b7f659, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0000000021492947
+      value: 0.0000000021492943
       objectReference: {fileID: 0}
     - target: {fileID: 3517831989323884725, guid: 7d82a578ccd5a924984f789a98b7f659, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -8.040836e-11
+      value: 8.040835e-11
       objectReference: {fileID: 0}
     - target: {fileID: 3517831989323884725, guid: 7d82a578ccd5a924984f789a98b7f659, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1333,6 +1333,18 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: 0.37450492
       objectReference: {fileID: 0}
+    - target: {fileID: 6470494991929503720, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_Size.z
+      value: 5.0192547
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470494991929503720, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_Center.y
+      value: 0.874166
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470494991929503720, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
+      propertyPath: m_Center.z
+      value: -0.4544667
+      objectReference: {fileID: 0}
     - target: {fileID: 6997260353286068193, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.216
@@ -1395,3 +1407,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2750438180868529756, guid: afc9e582c1711394f8562584d2e3716b, type: 3}
   m_PrefabInstance: {fileID: 4894821735747558194}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &4914793325308653883
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7333657469540114953}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.08, y: 0.888916, z: 1.3591466}
+  m_Center: {x: 0, y: -0.055541992, z: 2.589573}

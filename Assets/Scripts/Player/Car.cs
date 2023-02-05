@@ -74,22 +74,66 @@ public class Car : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private VisualEffect tailSmoke;
     [SerializeField] private WorldToCanvas targetUI;
+
+    // Upgrades
+    [HideInInspector] public float accelMult = 1.0f;
+    [HideInInspector] public float accelMultMin = 0.8f;
+     
+    [HideInInspector] public float nosCooldownMult = 1.0f;
+    [HideInInspector] public float nosCooldownMultMin = 0.8f;
+     
+    [HideInInspector] public float impactMult = 1.0f;
+    [HideInInspector] public float impactMultMin = 0.8f;
+     
+    [HideInInspector] public float steeringAngleMult = 1.0f;
+    [HideInInspector] public float steeringAngleMultMin = 0.8f;
+    
+    [HideInInspector] public float jumpMult = 1.0f;
+    [HideInInspector] public float jumpMultMin = 0.8f;
+    
+    [HideInInspector] public float swimSpeedMult = 1.0f;
+    [HideInInspector] public float swimSpeedMultMin = 0.8f;
+
+
     public void ApplyStat(Modifier.Stat.Modifies to, float value)
     {
         switch (to)
         {
             case Modifier.Stat.Modifies.Accel:
+                accelMult += value;
+
+                if (accelMult < accelMultMin)
+                    accelMult = accelMultMin;
                 break;
             case Modifier.Stat.Modifies.CoolDown:
-                value *= -1; //invert Positive should decrease
+                nosCooldownMult += value;
+
+                if (nosCooldownMult < nosCooldownMultMin)
+                    nosCooldownMult = nosCooldownMultMin;
                 break;
             case Modifier.Stat.Modifies.Impact:
+                impactMult += value;
+
+                if (impactMult < impactMultMin)
+                    impactMult = impactMultMin;
                 break;
             case Modifier.Stat.Modifies.Steering:
+                steeringAngleMult += value;
+
+                if (steeringAngleMult < steeringAngleMultMin)
+                    steeringAngleMult = steeringAngleMultMin;
                 break;
             case Modifier.Stat.Modifies.Jump:
+                jumpMult += value;
+
+                if (jumpMult < jumpMultMin)
+                    jumpMult = jumpMultMin;
                 break;
             case Modifier.Stat.Modifies.Swim_Speed:
+                swimSpeedMult += value;
+
+                if (swimSpeedMult < swimSpeedMultMin)
+                    swimSpeedMult = swimSpeedMultMin;
                 break;
             default:
                 break;
@@ -141,7 +185,7 @@ public class Car : MonoBehaviour
             return;
         }
 
-        nosCharge += Time.deltaTime * nosRechargeRate;
+        nosCharge += Time.deltaTime * nosRechargeRate * nosCooldownMult;
         nosCharge = Mathf.Clamp(nosCharge, 0.0f, maxNosCharge);
         if (nosCharge >= 1.0f && InputManager.Instance.IsBindDown("Boost"))
         {
@@ -324,8 +368,8 @@ public class Car : MonoBehaviour
     {
         float currentNosForce = isNOS ? nosMult : 1.0f;
 
-        frontLeftWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
-        frontRightWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce;
+        frontLeftWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce * accelMult;
+        frontRightWheelCollider.motorTorque = verticalInput * motorForce * currentNosForce * accelMult;
 
         float currentBreakForce = isBraking ? brakeForce : 0.0f;
 
@@ -342,7 +386,7 @@ public class Car : MonoBehaviour
         if (isJumping && (isGrounded || isSwimming))
         {
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.z);
-            rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity * (isSwimming ? waterJumpMult : 1.0f);
+            rigidbody.velocity += (isSwimming ? Vector3.up : transform.up) * jumpVelocity * (isSwimming ? waterJumpMult : 1.0f) * jumpMult;
             rigidbody.angularVelocity = new Vector3(0.0f, rigidbody.angularVelocity.y, 0.0f);
         }
         tiltInput = Vector2.zero;
@@ -405,7 +449,7 @@ public class Car : MonoBehaviour
 
             Vector3 swimDirection = cameraForward * tiltInput.y + cameraRight * tiltInput.x;
 
-            rigidbody.AddForce(swimAcceleration * swimDirection, ForceMode.Acceleration);
+            rigidbody.AddForce(swimAcceleration * swimDirection * jumpMult, ForceMode.Acceleration);
 
             float xDifference = 0.0f;
             if (transform.rotation.eulerAngles.x > 180.0f)
@@ -439,7 +483,7 @@ public class Car : MonoBehaviour
     }
     private void HandleSteering()
     {
-        steeringAngle = maxSteeringAngle * horizontalInput;
+        steeringAngle = maxSteeringAngle * horizontalInput * steeringAngleMult;
         frontLeftWheelCollider.steerAngle = steeringAngle;
         frontRightWheelCollider.steerAngle = steeringAngle;
     }
