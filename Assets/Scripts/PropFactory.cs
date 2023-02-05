@@ -39,6 +39,7 @@ public class PropFactory : MonoBehaviour
         Remove(prop);
         GameObject.Instantiate(Resources.Load<GameObject>("MoneyProjectile"), prop.GetComponent<Collider>().bounds.center, Quaternion.identity);
         Destroy(prop.gameObject, 1.0f);
+        Destroy(prop, 1.0f);
         GameManager.Instance.AddCash(200);
         var prefabs = GetComponent<TerrainGenerator>().treePrefab;
         SpawnTree(prefabs[Random.Range(0, prefabs.Length)], GetComponent<TerrainGenerator>().PlaceTree());
