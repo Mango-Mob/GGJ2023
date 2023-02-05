@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 using UnityEngine.VFX;
 public class Car : MonoBehaviour
 {
@@ -82,6 +83,7 @@ public class Car : MonoBehaviour
     [SerializeField] private VisualEffect tailSmoke;
     [SerializeField] private WorldToCanvas targetUI;
     [SerializeField] private ParticleSystem muzzleFlash;
+    [SerializeField] private Animator cameraShake;
 
     [Header("Audio")]
     [SerializeField] private SoloAudioAgent idleAudio;
@@ -112,8 +114,10 @@ public class Car : MonoBehaviour
     
     [HideInInspector] public float swimSpeedMult = 1.0f;
     [HideInInspector] public float swimSpeedMultMin = 0.8f;
-
-
+    public void ShakeCamera()
+    {
+        cameraShake.SetTrigger("Shake");
+    }
     public void ApplyStat(Modifier.Stat.Modifies to, float value)
     {
         switch (to)
@@ -235,7 +239,11 @@ public class Car : MonoBehaviour
         }
 
         PlayerHUD.Instance.charges.UpdateValue(nosCharge);
-        PlayerHUD.Instance.speed.value = (rigidbody.velocity.magnitude / 100.0f);
+
+        Vector3 playerSpeed = rigidbody.velocity;
+        playerSpeed.y = 0.0f;
+
+        PlayerHUD.Instance.speed.value = (playerSpeed.magnitude / 100.0f);
 
 
         ropeRenderer.enabled = hooked;
