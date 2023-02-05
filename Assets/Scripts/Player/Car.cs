@@ -54,6 +54,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float waterDamping = 1.0f;
     [SerializeField] private float swimAcceleration = 10.0f;
     [SerializeField] private float swimTorqueMult = 10.0f;
+    [SerializeField] private Animator floatsAnimator;
 
     [Header("Wheels")]
     [SerializeField] private WheelCollider frontLeftWheelCollider;
@@ -469,6 +470,8 @@ public class Car : MonoBehaviour
     private void HandleSwimming()
     {
         isSwimming = transform.position.y < waterFloatDepth;
+
+        floatsAnimator.SetBool("inflate", isSwimming);
 
         rigidbody.drag = isSwimming ? waterDamping : 0.0f;
         rigidbody.angularDrag = isSwimming ? waterDamping : 0.05f;
